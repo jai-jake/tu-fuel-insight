@@ -1,4 +1,5 @@
 import { IrisAppManifest } from '@trackunit/iris-app-api';
+import fuelInsightFuelInsight from "@idc-workspace/fuel-insight-fuel-insight";
 
 const nxPackageJson = require('../../package.json');
 const packageJson = require('./package.json');
@@ -25,7 +26,7 @@ const irisAppManifest: IrisAppManifest = {
     tags: [],
     categories: [],
   },
-  extensions: [],
+  extensions: [fuelInsightFuelInsight],
 };
 
 export default irisAppManifest;

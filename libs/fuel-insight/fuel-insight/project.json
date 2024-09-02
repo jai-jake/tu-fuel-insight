@@ -1,0 +1,19 @@
+{
+  "name": "fuel-insight-fuel-insight",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/fuel-insight/fuel-insight/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "libs/fuel-insight/fuel-insight/jest.config.ts"
+      }
+    }
+  }
+}
