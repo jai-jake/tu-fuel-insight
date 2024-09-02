@@ -1,0 +1,43 @@
+{
+  "name": "fuel-insight",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "sourceRoot": "apps/fuel-insight/src",
+  "targets": {
+    "build": {
+      "executor": "@trackunit/iris-app:build",
+      "options": {
+        "webpackConfig": "apps/fuel-insight/webpack.config.ts",
+        "outputPath": "dist/apps/fuel-insight"
+      },
+      "outputs": ["{options.outputPath}"]
+    },
+    "serve": {
+      "executor": "@trackunit/iris-app:serve",
+      "options": {
+        "webpackConfig": "apps/fuel-insight/webpack.config.ts"
+      },
+      "outputs": ["{options.outputPath}"]
+    },
+    "submitApp": {
+      "executor": "@trackunit/iris-app:submit",
+      "dependsOn": ["build"],
+      "options": {
+        "inputPath": "dist/apps/fuel-insight"
+      },
+      "outputs": ["{workspaceRoot}/dist/apps/fuel-insight"]
+    },
+    "unpublishApp": {
+      "executor": "@trackunit/iris-app:unpublish",
+      "options": {
+        "inputPath": "dist/apps/fuel-insight"
+      },
+      "dependsOn": [
+        {
+          "target": "build"
+        }
+      ],
+      "outputs": ["{workspaceRoot}/dist/apps/fuel-insight"]
+    }
+  }
+}
