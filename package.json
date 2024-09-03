@@ -4,6 +4,7 @@
   "license": "MIT",
   "scripts": {
     "start-insight:serve": "npx nx run fuel-insight:serve --port=22220",
+    "report-app":"npx nx run test-app:serve",
     "start-insight-fleet-ext:serve": "npx nx run fuel-insight-fleet-ext:serve --port=22221",
     "start:all": "npm-run-all --parallel start-insight:serve start-insight-fleet-ext:serve"
   },
