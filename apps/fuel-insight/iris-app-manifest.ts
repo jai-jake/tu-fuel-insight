@@ -20,7 +20,7 @@ const irisAppManifest: IrisAppManifest = {
   marketplace: {
     showInMarketplace: false,
     name: 'fuel-insight',
-    description: 'The fuel-insight app is used for <YOUR SUMMARY HERE>.',
+    description: 'The fuel-insight app is used for gauge the fuel consumption of different vechicles.',
     fullDescriptionPath: 'description.md',
     tags: [],
     categories: [],
