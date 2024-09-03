@@ -1,7 +1,9 @@
 import { IrisAppManifest } from '@trackunit/iris-app-api';
-import fuelInsightFuelInsight from "@idc-workspace/fuel-insight-fuel-insight";
+import fuelInsightsFuelInsightFleetExt from "@idc-workspace/fuel-insights-fuel-insight-fleet-ext";
 
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const nxPackageJson = require('../../package.json');
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const packageJson = require('./package.json');
 
 const irisAppManifest: IrisAppManifest = {
@@ -20,13 +22,14 @@ const irisAppManifest: IrisAppManifest = {
 
   marketplace: {
     showInMarketplace: false,
-    name: 'fuel-insight',
-    description: 'The fuel-insight app is used for gauge the fuel consumption of different vechicles.',
+    name: 'fuel-insight-fleet-ext',
+    description:
+      'The fuel-insight-fleet-ext app is used for <YOUR SUMMARY HERE>.',
     fullDescriptionPath: 'description.md',
     tags: [],
     categories: [],
   },
-  extensions: [fuelInsightFuelInsight],
+  extensions: [fuelInsightsFuelInsightFleetExt],
 };
 
 export default irisAppManifest;

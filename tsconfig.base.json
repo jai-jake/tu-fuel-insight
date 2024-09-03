@@ -15,6 +15,12 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@idc-workspace/fuel-insight-fuel-insight": [
+        "libs/fuel-insight/fuel-insight/extension-manifest.ts"
+      ],
+      "@idc-workspace/fuel-insights-fuel-insight-fleet-ext": [
+        "libs/fuel-insights/fuel-insight-fleet-ext/extension-manifest.ts"
+      ],
       "@idc-workspace/report-test": ["libs/report-test/extension-manifest.ts"]
     }
   },
