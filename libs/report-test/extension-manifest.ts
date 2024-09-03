@@ -4,11 +4,11 @@ const reportExtensionManifest: ReportExtensionManifest = {
   id: 'report-test',
   type: 'REPORT_EXTENSION',
   sourceRoot: 'libs/report-test/src',
-  main: '<ADD_YOUR_PATH_HERE>',
+  main: 'index.tsx',
   menuItem: {
-    name: 'Fuel Insight - Jai', // OR Translate!
-    description: 'Test Description',
-    icon: 'Calendar',
+    name: 'Fuel Insight',
+    description: 'Fuel Insight Report',
+    icon: 'QuestionMarkCircle',
   },
 };
 

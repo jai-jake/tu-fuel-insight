@@ -20,8 +20,8 @@ const irisAppManifest: IrisAppManifest = {
 
   marketplace: {
     showInMarketplace: false,
-    name: 'test-app-Jai',
-    description: 'The test-app app is used for <YOUR SUMMARY HERE>.',
+    name: 'IDC',
+    description: 'IDC POC',
     fullDescriptionPath: 'description.md',
     tags: [],
     categories: [],

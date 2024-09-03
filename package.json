@@ -10,9 +10,9 @@
   "private": true,
   "dependencies": {
     "@trackunit/css-tailwind": "0.0.166",
-    "@trackunit/iris-app": "^0.0.622",
-    "@trackunit/react-components": "0.1.405",
-    "@trackunit/react-core-contexts": "0.4.568",
+    "@trackunit/iris-app": "^0.0.623",
+    "@trackunit/react-components": "^0.1.406",
+    "@trackunit/react-core-contexts": "^0.4.569",
     "react": "18.3.1",
     "react-dom": "18.3.1",
     "tslib": "2.4.0"
@@ -29,8 +29,8 @@
     "@swc/helpers": "~0.5.11",
     "@testing-library/react": "13.4.0",
     "@trackunit/iris-app-api": "0.1.0",
-    "@trackunit/iris-app-build-utilities": "0.0.435",
-    "@trackunit/iris-app-webpack-plugin": "0.0.214",
+    "@trackunit/iris-app-build-utilities": "^0.0.436",
+    "@trackunit/iris-app-webpack-plugin": "^0.0.215",
     "@trackunit/react-core-contexts-test": "0.1.254",
     "@typescript-eslint/eslint-plugin": "7.18.0",
     "@typescript-eslint/parser": "7.18.0",
