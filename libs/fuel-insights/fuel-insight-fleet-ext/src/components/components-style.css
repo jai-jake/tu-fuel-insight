@@ -1,0 +1,102 @@
+.sidebar-wrapper {
+    width: 20%;
+    height: 100%;
+    background-color: #fff;
+    padding: 10px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    border-right: 1px solid #ccc;
+}
+
+.type-selection {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+    align-items: center;
+}
+
+.type-selection label {
+    font-size: 1.2rem;
+    margin: 5px 10px;
+    /* align-self: center; */
+}
+
+.type-selection select {
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    /* align-self: center; */
+    width: 80%;
+}
+
+.vec-selection-wrapper {
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+    margin: 0 10%;
+}
+
+.vec-selection-wrapper>label{
+    font-size: 1.2rem;
+    align-self: center;
+    margin-bottom: 10px;
+}
+
+.selction-boxs {
+    padding: 5px;
+    align-self: center;
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    width: 100%;
+    align-items: center;
+}
+
+.axis-selection-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+}
+
+.axis-selection-wrapper>label {
+    font-size: 1.2rem;
+    align-self: center;
+}
+
+.axis-selection {
+    align-self: center;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+    width: 80%;
+}
+
+.axis {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    width: 100%;
+}
+
+.axis > select {
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 100%;
+}
+
+.page-content {
+    width: 100%;
+    height: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    background-color: #fff;
+}

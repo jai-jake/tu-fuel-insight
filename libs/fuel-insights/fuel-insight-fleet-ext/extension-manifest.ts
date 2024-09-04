@@ -6,7 +6,7 @@ const fleetExtensionManifest: FleetExtensionManifest = {
   sourceRoot: 'libs/fuel-insights/fuel-insight-fleet-ext/src',
 
   menuItem: {
-    name: 'fuel-insights-fuel-insight-fleet-ext',
+    name: 'Fuel Insights',
     icon: 'QuestionMarkCircle',
   },
 };

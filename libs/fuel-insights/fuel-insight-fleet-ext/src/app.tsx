@@ -1,33 +1,35 @@
-import React from 'react';
-import {
-  Card,
-  CardBody,
-  CardHeader,
-  Text,
-  Button,
-  Alert,
-} from '@trackunit/react-components';
+import './app.css';
+import { useState } from 'react';
+import Sidebar from './components/sidebar';
+import { PageContent } from './components/page-content';
+
+// Define the union type for xAxis and yAxis
+type AxisType = 'load' | 'fuel';
 
 export const App = () => {
+  const [chartType, setChartType] = useState<string>('');
+  const [selectedVehicles, setSelectedVehicles] = useState<string[]>([]);
+  const [xAxis, setXAxis] = useState<AxisType>('load');
+  const [yAxis, setYAxis] = useState<AxisType>('fuel');
+
   return (
-    <div className="w-full h-full grid place-content-center" data-testid="app">
-      <Card className="w-full">
-        <CardHeader
-          heading="Welcome to your app extension"
-          subHeading="Change the code in this file as you see fit"
-        />
-        <CardBody>
-          <Alert color="success">
-            You are now ready to develop your app extension.
-          </Alert>
-          <Text> We also have buttons</Text>
-          <Button>Click me!</Button>
-          <Text>
-            More info and component found in storybook: <br />
-            https://apps.iris.trackunit.com/storybook/
-          </Text>
-        </CardBody>
-      </Card>
+    <div className='main-wrapper'>
+      <Sidebar
+        chartType={chartType}
+        setChartType={setChartType}
+        selectedVehicles={selectedVehicles}
+        setSelectedVehicles={setSelectedVehicles}
+        xAxis={xAxis}
+        setXAxis={setXAxis}
+        yAxis={yAxis}
+        setYAxis={setYAxis}
+      />
+      <PageContent
+        chartType={chartType}
+        selectedVehicles={selectedVehicles}
+        xAxis={xAxis}
+        yAxis={yAxis}
+      />
     </div>
   );
 };

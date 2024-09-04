@@ -14,7 +14,9 @@
     "@trackunit/iris-app": "^0.0.623",
     "@trackunit/react-components": "^0.1.406",
     "@trackunit/react-core-contexts": "^0.4.569",
+    "chart.js": "^4.4.4",
     "react": "18.3.1",
+    "react-chartjs-2": "^5.2.0",
     "react-dom": "18.3.1",
     "tslib": "2.4.0"
   },
