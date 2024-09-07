@@ -11,7 +11,7 @@
   "private": true,
   "dependencies": {
     "@trackunit/css-tailwind": "0.0.167",
-    "@trackunit/iris-app": "^0.0.626",
+    "@trackunit/iris-app": "^0.0.627",
     "@trackunit/react-components": "^0.1.411",
     "@trackunit/react-core-contexts": "^0.4.575",
     "@trackunit/react-date-and-time-components": "^0.0.108",
@@ -35,7 +35,7 @@
     "@swc/helpers": "~0.5.11",
     "@testing-library/react": "13.4.0",
     "@trackunit/iris-app-api": "0.2.1",
-    "@trackunit/iris-app-build-utilities": "^0.0.438",
+    "@trackunit/iris-app-build-utilities": "^0.0.439",
     "@trackunit/iris-app-webpack-plugin": "^0.0.218",
     "@trackunit/react-core-contexts-test": "0.1.257",
     "@typescript-eslint/eslint-plugin": "7.18.0",
