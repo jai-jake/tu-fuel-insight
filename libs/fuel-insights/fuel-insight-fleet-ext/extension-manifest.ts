@@ -7,7 +7,7 @@ const fleetExtensionManifest: FleetExtensionManifest = {
 
   menuItem: {
     name: 'Fuel Insights',
-    icon: 'Truck',
+    icon: 'PresentationChartBar',
   },
 };
 

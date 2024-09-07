@@ -1,102 +1,164 @@
 .sidebar-wrapper {
-    width: 20%;
-    height: 100%;
-    background-color: #fff;
-    padding: 10px;
-    box-sizing: border-box;
-    display: flex;
-    flex-direction: column;
-    gap: 25px;
-    border-right: 1px solid #ccc;
+  width: 25%;
+  height: 100%;
+  background-color: #fff;
+  padding: 10px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+  border-right: 1px solid #ccc;
 }
 
 .type-selection {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    width: 100%;
-    align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+  align-items: center;
 }
 
 .type-selection label {
-    font-size: 1.2rem;
-    margin: 5px 10px;
-    /* align-self: center; */
+  font-size: 1.2rem;
+  margin: 5px 10px;
+  /* align-self: center; */
 }
 
-.type-selection select {
-    padding: 5px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    /* align-self: center; */
-    width: 80%;
+select {
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  align-self: center;
+  width: 80%;
 }
 
 .vec-selection-wrapper {
-    display: flex;
-    flex-direction: column;
-    width: 80%;
-    margin: 0 10%;
+  display: flex;
+  flex-direction: column;
+  width: 80%;
+  margin: 0 10%;
 }
 
-.vec-selection-wrapper>label{
-    font-size: 1.2rem;
-    align-self: center;
-    margin-bottom: 10px;
+.vec-selection-wrapper > label {
+  font-size: 1.2rem;
+  align-self: center;
+  margin-bottom: 10px;
 }
 
 .selction-boxs {
-    padding: 5px;
-    align-self: center;
-    display: flex;
-    flex-direction: row;
-    gap: 10px;
-    width: 100%;
-    align-items: center;
+  padding: 5px;
+  align-self: center;
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  width: 100%;
+  align-items: center;
 }
 
 .axis-selection-wrapper {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
 }
 
-.axis-selection-wrapper>label {
-    font-size: 1.2rem;
-    align-self: center;
+.axis-selection-wrapper > label {
+  font-size: 1.2rem;
+  align-self: center;
 }
 
 .axis-selection {
-    align-self: center;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    align-items: center;
-    width: 80%;
+  align-self: center;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: center;
+  width: 80%;
 }
 
 .axis {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-    width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  width: 100%;
 }
 
 .axis > select {
-    padding: 5px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    width: 100%;
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  width: 100%;
 }
 
 .page-content {
-    width: 100%;
-    height: 100%;
-    padding: 10px;
-    box-sizing: border-box;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    background-color: #fff;
+  width: 100%;
+  height: 100%;
+  padding: 10px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background-color: #fff;
+  overflow: hidden;
+}
+
+.custom-modal-size {
+  width: 50%;
+  /* height: 50%; */
+}
+
+.date-calendar-label {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  align-items: center;
+}
+
+.z-20 {
+  align-self: center;
+  border: 1px solid #dede;
+}
+
+.chart-section {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+  flex-wrap: wrap;
+  overflow: auto;
+  align-items: flex-start;
+}
+
+.chart-container {
+  min-width: 630px;
+  width: 49%;
+  height: 440px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  box-shadow: 0 4px 4px 0 #ccc;
+  overflow: hidden;
+}
+
+.chart-header {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+  background-color: #fefefe;
+  border-bottom: 1px solid #ccc;
+  border-radius: 10px 10px 0 0;
+  height: 40px;
+}
+
+h3 {
+  max-width: 450px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.chart-body {
+  width: 100%;
+  height: calc(100% - 40px);
+  overflow: auto;
+  display: flex;
+  align-items: center;
 }
