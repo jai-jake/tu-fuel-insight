@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import './app.css';
 import { datasets } from './datasets';
 import {
@@ -11,12 +13,16 @@ import {
 import { Select } from '@trackunit/react-form-components';
 
 import { useModal } from '@trackunit/react-modal';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import FileUpload from './components/FileUpload/FileUpload';
+import { useAtom } from 'jotai';
+import { FileUploadAtom } from './components/FileUpload/FileUploadStore';
 
 export const App = () => {
   const { closeModal, openModal, Modal } = useModal({
     closeOnOutsideClick: true,
   });
+  const [uploadedData] = useAtom(FileUploadAtom);
 
   const [chartGeneratorStage, setChartGeneratorStage] = useState('chartInfo');
 
@@ -75,9 +81,14 @@ export const App = () => {
     console.log(event.target.value);
   };
 
+  useEffect(() => {
+    console.log('<<uploadedData>>', uploadedData);
+  }, [uploadedData]);
+
   return (
     <div className="w-full h-full">
       <div className="add-custom-button">
+        <FileUpload />
         <button className="cus-button-1 button-black" onClick={openModal}>
           Add Chart
         </button>
@@ -88,7 +99,7 @@ export const App = () => {
           subHeading="Change the code in this file as you see fit"
         />
         <CardBody>
-          
+
         </CardBody>
       </Card> */}
       <Modal className="custom-modal-size">

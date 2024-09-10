@@ -4,22 +4,25 @@
   "license": "MIT",
   "scripts": {
     "start-insight:serve": "npx nx run fuel-insight-fleet-ext:serve",
-    "start:all": "npm-run-all --parallel start-insight:serve"
+    "start:all": "npm-run-all --parallel start-insight:serve",
+    "start": "npx nx run fleet-fuel-xpert:serve --verbose"
   },
   "private": true,
   "dependencies": {
     "@trackunit/css-tailwind": "0.0.168",
-    "@trackunit/iris-app": "^0.0.628",
-    "@trackunit/react-components": "^0.1.412",
-    "@trackunit/react-core-contexts": "^0.4.576",
-    "@trackunit/react-date-and-time-components": "^0.0.109",
-    "@trackunit/react-form-components": "^0.1.23",
-    "@trackunit/react-modal": "^0.0.85",
+    "@trackunit/iris-app": "^0.0.629",
+    "@trackunit/react-components": "^0.1.414",
+    "@trackunit/react-core-contexts": "^0.4.578",
+    "@trackunit/react-date-and-time-components": "^0.0.111",
+    "@trackunit/react-form-components": "^0.1.25",
+    "@trackunit/react-modal": "^0.0.87",
     "chart.js": "^4.4.4",
+    "jotai": "^2.9.3",
     "react": "18.3.1",
     "react-chartjs-2": "^5.2.0",
     "react-dom": "18.3.1",
-    "tslib": "2.4.0"
+    "tslib": "2.4.0",
+    "xlsx": "^0.18.5"
   },
   "devDependencies": {
     "@nx/devkit": "19.6.5",
@@ -32,9 +35,9 @@
     "@swc/core": "~1.5.7",
     "@swc/helpers": "~0.5.11",
     "@testing-library/react": "13.4.0",
-    "@trackunit/iris-app-api": "0.2.1",
-    "@trackunit/iris-app-build-utilities": "^0.0.439",
-    "@trackunit/iris-app-webpack-plugin": "^0.0.218",
+    "@trackunit/iris-app-api": "0.2.2",
+    "@trackunit/iris-app-build-utilities": "^0.0.440",
+    "@trackunit/iris-app-webpack-plugin": "^0.0.219",
     "@trackunit/react-core-contexts-test": "0.1.258",
     "@typescript-eslint/eslint-plugin": "7.18.0",
     "@typescript-eslint/parser": "7.18.0",
