@@ -1,0 +1,43 @@
+{
+  "name": "fleet-fuel-xpert",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "sourceRoot": "apps/fleet-fuel-xpert/src",
+  "targets": {
+    "build": {
+      "executor": "@trackunit/iris-app:build",
+      "options": {
+        "webpackConfig": "apps/fleet-fuel-xpert/webpack.config.ts",
+        "outputPath": "dist/apps/fleet-fuel-xpert"
+      },
+      "outputs": ["{options.outputPath}"]
+    },
+    "serve": {
+      "executor": "@trackunit/iris-app:serve",
+      "options": {
+        "webpackConfig": "apps/fleet-fuel-xpert/webpack.config.ts"
+      },
+      "outputs": ["{options.outputPath}"]
+    },
+    "submitApp": {
+      "executor": "@trackunit/iris-app:submit",
+      "dependsOn": ["build"],
+      "options": {
+        "inputPath": "dist/apps/fleet-fuel-xpert"
+      },
+      "outputs": ["{workspaceRoot}/dist/apps/fleet-fuel-xpert"]
+    },
+    "unpublishApp": {
+      "executor": "@trackunit/iris-app:unpublish",
+      "options": {
+        "inputPath": "dist/apps/fleet-fuel-xpert"
+      },
+      "dependsOn": [
+        {
+          "target": "build"
+        }
+      ],
+      "outputs": ["{workspaceRoot}/dist/apps/fleet-fuel-xpert"]
+    }
+  }
+}
