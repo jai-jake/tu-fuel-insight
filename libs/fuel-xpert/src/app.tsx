@@ -18,6 +18,7 @@ import { useEffect, useState } from 'react';
 import FileUpload from './components/FileUpload/FileUpload';
 import { useAtom } from 'jotai';
 import { FileUploadAtom } from './components/FileUpload/FileUploadStore';
+import DragAndSwap from './components/DragAndSwap/DragAndSwap';
 
 export const App = () => {
   const { closeModal, openModal, Modal } = useModal({
@@ -103,6 +104,7 @@ export const App = () => {
           <Text size="small">Create Your Own Charts</Text>
         </div>
       </div>
+      <DragAndSwap />
       {/* <Modal className="custom-modal-size">
         <div className="cus-modal-header">
           <Button className="cus-button-close" onClick={closeModal}>
