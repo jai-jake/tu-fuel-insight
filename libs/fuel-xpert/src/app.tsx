@@ -9,6 +9,7 @@ import {
   Text,
   Button,
   Alert,
+  Icon,
 } from '@trackunit/react-components';
 import { Select } from '@trackunit/react-form-components';
 
@@ -86,23 +87,23 @@ export const App = () => {
   }, [uploadedData]);
 
   return (
-    <div className="w-full h-full">
-      <div className="add-custom-button">
-        <FileUpload />
-        <button className="cus-button-1 button-black" onClick={openModal}>
-          Add Chart
-        </button>
+    <div className="main-wrapper">
+      {/* <FileUpload /> */}
+      <div className="report-card-warpper">
+        <div className="inner-card-wrapper">
+          <Icon
+            name="PresentationChartLine"
+            size="large"
+            color="critical"
+            className="margin-bottom-10"
+          />
+          <Text size="large" weight="thick">
+            Chart Generator
+          </Text>
+          <Text size="small">Create Your Own Charts</Text>
+        </div>
       </div>
-      {/* <Card className="w-full">
-        <CardHeader
-          heading="Welcome to your app extension"
-          subHeading="Change the code in this file as you see fit"
-        />
-        <CardBody>
-
-        </CardBody>
-      </Card> */}
-      <Modal className="custom-modal-size">
+      {/* <Modal className="custom-modal-size">
         <div className="cus-modal-header">
           <Button className="cus-button-close" onClick={closeModal}>
             X
@@ -162,14 +163,6 @@ export const App = () => {
                   </option>
                 </select>
               </div>
-              {/* <div className="form-input-group">
-                <select className="form-input">
-                  <option value="">Y - Axis</option>
-                  <option value="line">Line Chart</option>
-                  <option value="bar">Bar Chart</option>
-                  <option value="doughnut">Doughnut Chart</option>
-                </select>
-              </div> */}
             </div>
             <div className="form-button-group-vertical">
               <button
@@ -187,7 +180,7 @@ export const App = () => {
             </div>
           </div>
         )}
-      </Modal>
+      </Modal> */}
     </div>
   );
 };
