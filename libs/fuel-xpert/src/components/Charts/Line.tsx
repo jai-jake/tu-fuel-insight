@@ -61,6 +61,26 @@ const LineChart = (chartDetails: any) => {
         color: data.color,
       };
     }),
+    yAxis: {
+      title: {
+        text:
+          yAxis === 'fuel'
+            ? 'Fuel Consumption'
+            : yAxis === 'load_without_payload'
+            ? 'Unloaded'
+            : 'Load',
+      },
+    },
+    xAxis: {
+      title: {
+        text:
+          xAxis === 'fuel'
+            ? 'Fuel Consumption'
+            : xAxis === 'load_without_payload'
+            ? 'Unloaded'
+            : 'Load',
+      },
+    },
   };
 
   return <HighchartsReact highcharts={Highcharts} options={options} />;

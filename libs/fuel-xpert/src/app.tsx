@@ -7,13 +7,10 @@ import { Select } from '@trackunit/react-form-components';
 
 import { useModal } from '@trackunit/react-modal';
 import { useEffect, useState } from 'react';
-import FileUpload from './components/FileUpload/FileUpload';
 import { useAtom } from 'jotai';
 import { FileUploadAtom } from './components/FileUpload/FileUploadStore';
-import DragAndSwap from './components/DragAndSwap/DragAndSwap';
 import ChartCard from './components/ChartCard/ChartCard';
 import Draggable from 'react-draggable';
-import { charts } from 'highcharts';
 
 export const App = () => {
   const { closeModal, openModal, Modal } = useModal({
@@ -24,31 +21,23 @@ export const App = () => {
   const [chartGeneratorStage, setChartGeneratorStage] = useState('chartInfo');
 
   const [chartsList, setChartsList] = useState<any[]>([
-    {
-      type: 'bar',
-      title: 'Fuel Consumption',
-      description: 'Fuel Consumption of Vehicles',
-      selectedVechileList: ['vehicle1', 'vehicle2'],
-      dateRange: '2024-08-01',
-      singleAxisValue: 'load_with_payload',
-    },
-    {
-      type: 'line',
-      title: 'Fuel Consumption',
-      description: 'Fuel Consumption of Vehicles',
-      selectedVechileList: ['vehicle1', 'vehicle2'],
-      dateRange: '2024-08-01',
-      xAxis: 'load',
-      yAxis: 'fuel',
-    },
-    {
-      type: 'doughnut',
-      title: 'Fuel Consumption',
-      description: 'Fuel Consumption of Vehicles',
-      selectedVechileList: ['vehicle1', 'vehicle2'],
-      dateRange: '2024-08-01',
-      singleAxisValue: 'load_with_payload',
-    },
+    // {
+    //   type: 'bar',
+    //   title: 'Fuel Consumption',
+    //   description: 'Fuel Consumption of Vehicles',
+    //   selectedVechileList: ['vehicle1', 'vehicle2'],
+    //   dateRange: '2024-08-01',
+    //   singleAxisValue: 'load_with_payload',
+    // },
+    // {
+    //   type: 'line',
+    //   title: 'Fuel Consumption',
+    //   description: 'Fuel Consumption of Vehicles',
+    //   selectedVechileList: ['vehicle1', 'vehicle2'],
+    //   dateRange: '2024-08-01',
+    //   xAxis: 'load',
+    //   yAxis: 'fuel',
+    // },
   ]);
 
   const vehicles: any[] = datasets.map((dataset: any) => {
@@ -242,7 +231,6 @@ export const App = () => {
 
   return (
     <div className="main-wrapper">
-      {/* <FileUpload /> */}
       {chartsList.length === 0 && (
         <div className="report-card-warpper" onClick={openModal}>
           <div className="inner-card-wrapper">

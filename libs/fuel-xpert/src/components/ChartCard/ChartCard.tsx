@@ -9,6 +9,7 @@ import { Text, Icon, Button } from '@trackunit/react-components';
 import { useModal } from '@trackunit/react-modal';
 import { Select } from '@trackunit/react-form-components';
 import { chart } from 'highcharts';
+import FileUpload from '../FileUpload/FileUpload';
 
 const ChartCard: React.FC<any> = ({ chartData, index, onDelete, onUpdate }) => {
   const chartValue = chartData;
@@ -165,6 +166,7 @@ const ChartCard: React.FC<any> = ({ chartData, index, onDelete, onUpdate }) => {
             </span>
           </div>
           <div className="chart-card-header-actions">
+            <FileUpload />
             <Icon
               name="PencilSquare"
               type="outline"
@@ -175,7 +177,7 @@ const ChartCard: React.FC<any> = ({ chartData, index, onDelete, onUpdate }) => {
               onClick={openModal}
             />
             <Icon
-              name="XMark"
+              name="Trash"
               type="outline"
               style={{
                 cursor: 'pointer',
