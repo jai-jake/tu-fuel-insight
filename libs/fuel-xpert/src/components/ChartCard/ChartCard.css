@@ -1,0 +1,101 @@
+.chart-card-wrapper {
+  min-width: 650px;
+  width: 49.5%;
+  height: 500px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 10px;
+  box-shadow: 0 0 10px 0 rgba(47, 45, 45, 0.2);
+  border-radius: 15px;
+}
+
+.chart-card-header-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 10px;
+  border-radius: 8px;
+  background-color: #dddddd;
+}
+
+.chart-card-title-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.chart-card-header-title {
+  display: flex;
+  justify-content: center;
+  align-self: center;
+  gap: 10px;
+}
+
+.title-min-width {
+  color: #4a4948;
+  max-width: 350px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: medium;
+  font-style: italic;
+  font-family: fangsong;
+  align-self: baseline;
+}
+
+.tooltip {
+  position: relative;
+  display: inline-block;
+}
+
+.tooltip .tooltiptext {
+  visibility: hidden;
+  min-width: 120px;
+  width: 300px;
+  background-color: #343332;
+  color: #fff;
+  text-align: start;
+  border-radius: 6px;
+  padding: 5px;
+  position: absolute;
+  z-index: 1;
+  top: 100%; /* Position the tooltip below the icon */
+  left: 250%;
+  margin-left: -60px; /* Use half of the width to center the tooltip */
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+  opacity: 1;
+}
+
+.chart-card-header-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.selection-wrapper {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.selection-items {
+  width: fit-content;
+  padding: 3px 8px;
+  display: flex;
+  gap: 10px;
+  border: 1px solid #3fff04;
+  border-radius: 15px;
+  background-color: #3fff04;
+}
+
+.chart-content {
+  width: 100%;
+  height: 100%;
+  padding: 10px;
+  /* overflow-y: auto; */
+}
