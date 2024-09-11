@@ -146,6 +146,11 @@ const ChartCard: React.FC<any> = ({ chartData, index, onDelete, onUpdate }) => {
       <div className="chart-card-header-wrapper">
         <div className="chart-card-title-wrapper">
           <div className="chart-card-header-title">
+            <Icon
+              className="drag-handle"
+              name="EllipsisDrag"
+              style={{ cursor: 'grab' }}
+            ></Icon>
             <Text className="title-min-width">{chartValue.title}</Text>
             <span className="tooltip">
               <Icon
@@ -184,14 +189,19 @@ const ChartCard: React.FC<any> = ({ chartData, index, onDelete, onUpdate }) => {
           {chartValue.selectedVechileList.map(
             (vechile: any, vechileIndex: number) => {
               return (
-                <div className="selection-items" key={vechileIndex}>
-                  <Text size="small" weight="normal">
-                    {vechile}
-                  </Text>
+                <div
+                  className="selection-items"
+                  key={vechileIndex}
+                  style={{
+                    background: datasets.find((d) => d.name === vechile)?.color,
+                    color: datasets.find((d) => d.name === vechile)?.textColor,
+                  }}
+                >
+                  <span>{vechile}</span>
                   <Icon
                     name="XMark"
                     size="medium"
-                    style={{ cursor: 'pointer', alignContent: 'center' }}
+                    style={{ cursor: 'pointer', alignSelf: 'center' }}
                     onClick={() => handleRemoveVechileFromList(vechile)}
                   />
                 </div>

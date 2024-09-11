@@ -2,8 +2,8 @@ export const datasets = [
   {
     name: 'vehicle1',
     label: 'Vehicle 1',
-    color: 'rgba(255, 99, 132, 0.2)',
-    borderColor: 'rgba(255, 99, 132, 1)',
+    color: '#f87b4e',
+    textColor: '#000000',
     data: [
       {
         timestamp: '2024-08-01 08:00',
@@ -304,8 +304,8 @@ export const datasets = [
   {
     name: 'vehicle2',
     label: 'Vehicle 2',
-    color: 'rgba(54, 162, 235, 0.2)',
-    borderColor: 'rgba(54, 162, 235, 1)',
+    color: '#000000',
+    textColor: '#ffffff',
     data: [
       {
         timestamp: '2024-08-01 09:00',
@@ -606,8 +606,8 @@ export const datasets = [
   {
     name: 'vehicle3',
     label: 'Vehicle 3',
-    color: 'rgba(255, 206, 86, 0.2)',
-    borderColor: 'rgba(255, 206, 86, 1)',
+    color: '#6bccfe',
+    textColor: '#000000',
     data: [
       {
         timestamp: '2024-08-01 07:00',
@@ -908,8 +908,8 @@ export const datasets = [
   {
     name: 'vehicle4',
     label: 'Vehicle 4',
-    color: 'rgba(75, 192, 192, 0.2)',
-    borderColor: 'rgba(75, 192, 192, 1)',
+    color: '#ffc54a',
+    textColor: '#000000',
     data: [
       {
         timestamp: '2024-08-01 10:00',
@@ -1203,8 +1203,8 @@ export const datasets = [
   {
     name: 'vehicle5',
     label: 'Vehicle 5',
-    color: 'rgba(153, 102, 255, 0.2)',
-    borderColor: 'rgba(153, 102, 255, 1)',
+    color: '#6ff17d',
+    textColor: '#000000',
     data: [
       {
         timestamp: '2024-08-01 09:00',

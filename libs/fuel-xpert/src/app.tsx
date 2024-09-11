@@ -12,6 +12,8 @@ import { useAtom } from 'jotai';
 import { FileUploadAtom } from './components/FileUpload/FileUploadStore';
 import DragAndSwap from './components/DragAndSwap/DragAndSwap';
 import ChartCard from './components/ChartCard/ChartCard';
+import Draggable from 'react-draggable';
+import { charts } from 'highcharts';
 
 export const App = () => {
   const { closeModal, openModal, Modal } = useModal({
@@ -21,7 +23,33 @@ export const App = () => {
 
   const [chartGeneratorStage, setChartGeneratorStage] = useState('chartInfo');
 
-  const [chartsList, setChartsList] = useState<any[]>([]);
+  const [chartsList, setChartsList] = useState<any[]>([
+    {
+      type: 'bar',
+      title: 'Fuel Consumption',
+      description: 'Fuel Consumption of Vehicles',
+      selectedVechileList: ['vehicle1', 'vehicle2'],
+      dateRange: '2024-08-01',
+      singleAxisValue: 'load_with_payload',
+    },
+    {
+      type: 'line',
+      title: 'Fuel Consumption',
+      description: 'Fuel Consumption of Vehicles',
+      selectedVechileList: ['vehicle1', 'vehicle2'],
+      dateRange: '2024-08-01',
+      xAxis: 'load',
+      yAxis: 'fuel',
+    },
+    {
+      type: 'doughnut',
+      title: 'Fuel Consumption',
+      description: 'Fuel Consumption of Vehicles',
+      selectedVechileList: ['vehicle1', 'vehicle2'],
+      dateRange: '2024-08-01',
+      singleAxisValue: 'load_with_payload',
+    },
+  ]);
 
   const vehicles: any[] = datasets.map((dataset: any) => {
     return {
@@ -155,6 +183,59 @@ export const App = () => {
     setChartsList(updatedChartsList);
   };
 
+  const handleStop = (e: any, data: any, index: number) => {
+    const newChartsList = [...chartsList];
+    const [movedItem] = newChartsList.splice(index, 1);
+    const newIndex = data.y > 0 ? index + 1 : index - 1;
+    newChartsList.splice(newIndex, 0, movedItem);
+    setChartsList(newChartsList);
+
+    // const updatedCards = [...chartsList];
+    // updatedCards[index] = { ...updatedCards[index], x: data.x, y: data.y };
+
+    // // Check if we need to swap positions with another card
+    // for (let i = 0; i < chartsList.length; i++) {
+    //   if (i !== index && isColliding(updatedCards[index], updatedCards[i])) {
+    //     // Swap positions of the two cards
+    //     const temp = { ...updatedCards[i] }; // Store card i's position
+    //     updatedCards[i] = {
+    //       ...updatedCards[i],
+    //       type: chartsList[i].type,
+    //       title: chartsList[i].title,
+    //       description: chartsList[i].description,
+    //       selectedVechileList: chartsList[i].selectedVechileList,
+    //       dateRange: chartsList[i].dateRange,
+    //       singleAxisValue: chartsList[i].singleAxisValue,
+    //       xAxis: chartsList[i].xAxis,
+    //       yAxis: chartsList[i].yAxis,
+    //     }; // Move card i to card index's position
+    //     updatedCards[index] = {
+    //       ...updatedCards[index],
+    //       type: chartsList[index].type,
+    //       title: chartsList[index].title,
+    //       description: chartsList[index].description,
+    //       selectedVechileList: chartsList[index].selectedVechileList,
+    //       dateRange: chartsList[index].dateRange,
+    //       singleAxisValue: chartsList[index].singleAxisValue,
+    //       xAxis: chartsList[index].xAxis,
+    //       yAxis: chartsList[index].yAxis,
+    //     }; // Move card index to card i's position
+    //     break;
+    //   }
+    // }
+
+    // setChartsList(updatedCards);
+  };
+
+  // Check if two cards are colliding
+  const isColliding = (card1: any, card2: any): boolean => {
+    const buffer = 100; // Adjust the buffer for better overlap detection
+    return (
+      Math.abs(card1.x - card2.x) < buffer &&
+      Math.abs(card1.y - card2.y) < buffer
+    );
+  };
+
   useEffect(() => {
     console.log('<<uploadedData>>', uploadedData);
   }, [uploadedData]);
@@ -195,13 +276,21 @@ export const App = () => {
           <div className="chart-content">
             {chartsList.map((chartData: any, index: number) => {
               return (
-                <ChartCard
+                <Draggable
                   key={index}
-                  index={index}
-                  chartData={chartData}
-                  onDelete={handleDeleteChart}
-                  onUpdate={handleUpadteChartData}
-                />
+                  handle=".drag-handle"
+                  onStop={(e, data) => handleStop(e, data, index)}
+                >
+                  <div>
+                    <ChartCard
+                      key={index}
+                      index={index}
+                      chartData={chartData}
+                      onDelete={handleDeleteChart}
+                      onUpdate={handleUpadteChartData}
+                    />
+                  </div>
+                </Draggable>
               );
             })}
           </div>
@@ -328,7 +417,7 @@ export const App = () => {
           </div>
         )}
       </Modal>
-      <DragAndSwap />
+      {/* <DragAndSwap /> */}
     </div>
   );
 };

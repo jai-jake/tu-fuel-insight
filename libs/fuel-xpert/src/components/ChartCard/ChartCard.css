@@ -88,9 +88,7 @@
   padding: 3px 8px;
   display: flex;
   gap: 10px;
-  border: 1px solid #3fff04;
   border-radius: 15px;
-  background-color: #3fff04;
 }
 
 .chart-content {

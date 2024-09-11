@@ -46,7 +46,7 @@ const LineChart = (chartDetails: any) => {
 
   const options: Highcharts.Options = {
     title: {
-      text: 'My chart',
+      text: '',
     },
     chart: {
       type: 'line',
@@ -58,6 +58,7 @@ const LineChart = (chartDetails: any) => {
           return [set[axis(xAxis)], set[axis(yAxis)]];
         }),
         name: data.label,
+        color: data.color,
       };
     }),
   };

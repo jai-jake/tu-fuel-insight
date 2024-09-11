@@ -103,7 +103,10 @@ const BarChart = (chartDetails: any) => {
     xAxis: {
       categories: datesInRange,
     },
-    series: series,
+    series: series.map((s: any) => ({
+      ...s,
+      color: datasets.find((d) => d.label === s.name)?.color,
+    })),
   };
 
   return <HighchartsReact highcharts={Highcharts} options={options} />;

@@ -86,8 +86,11 @@ const DoughnutChart = (chartDetails: any) => {
       {
         type: 'pie',
         name: 'Fuel Consumption',
-        data: seriesData,
-        innerSize: '80%',
+        data: seriesData.map((s: any) => ({
+          ...s,
+          color: datasets.find((d) => d.name === s.name)?.color,
+        })),
+        innerSize: '60%',
       },
     ],
   };
