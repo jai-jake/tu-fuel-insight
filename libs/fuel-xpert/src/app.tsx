@@ -10,6 +10,7 @@ import { useEffect, useState } from 'react';
 import FileUpload from './components/FileUpload/FileUpload';
 import { useAtom } from 'jotai';
 import { FileUploadAtom } from './components/FileUpload/FileUploadStore';
+import DragAndSwap from './components/DragAndSwap/DragAndSwap';
 import ChartCard from './components/ChartCard/ChartCard';
 
 export const App = () => {
@@ -327,6 +328,7 @@ export const App = () => {
           </div>
         )}
       </Modal>
+      <DragAndSwap />
     </div>
   );
 };
