@@ -49,13 +49,10 @@ const BarChart = (chartDetails: any) => {
     })
     .map((dataset: any) => {
       dataset.data = dataset.data.filter((set: any) => {
-        if (
-          chartValue.singleAxisValue === 'load_with_payload' &&
-          set.weight > 0
-        ) {
+        if (chartValue.singleAxisValue === 'loaded' && set.weight > 0) {
           return true;
         } else if (
-          chartValue.singleAxisValue === 'load_without_payload' &&
+          chartValue.singleAxisValue === 'unloaded' &&
           set.weight === 0
         ) {
           return true;

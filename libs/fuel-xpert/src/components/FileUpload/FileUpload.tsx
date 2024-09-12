@@ -9,7 +9,7 @@ interface VehicleData {
   name: string;
   label: string;
   color: string;
-  borderColor: string;
+  textColor: string;
   data: Array<{
     timestamp: string;
     weight: number;
@@ -67,7 +67,7 @@ const FileUpload = () => {
         name,
         label,
         color,
-        borderColor,
+        textColor,
         timestamp,
         weight,
         terrain,
@@ -83,7 +83,7 @@ const FileUpload = () => {
           name,
           label,
           color,
-          borderColor,
+          textColor,
           data: [],
         };
         vehicles.push(vehicle);

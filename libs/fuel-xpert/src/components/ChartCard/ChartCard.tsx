@@ -65,8 +65,7 @@ const ChartCard: React.FC<any> = ({ chartData, index, onDelete, onUpdate }) => {
   const [xAxis, setXAxis] = useState<string>(chartValue.xAxis);
   const [yAxis, setYAxis] = useState<string>(chartValue.yAxis);
   const axisOptions = [
-    { key: 'load', value: 'Load (With Loaded)' },
-    { key: 'load_without_payload', value: 'Load (With Unloaded)' },
+    { key: 'load', value: 'Load' },
     { key: 'fuel', value: 'Fuel Consumption' },
   ];
 
@@ -80,18 +79,18 @@ const ChartCard: React.FC<any> = ({ chartData, index, onDelete, onUpdate }) => {
 
   const filteredXAxisOptions = axisOptions.filter((option) => {
     if (yAxis === 'fuel') {
-      return option.key === 'load' || option.key === 'load_without_payload';
-    } else if (yAxis === 'load' || yAxis === 'load_without_payload') {
-      return option.key !== 'load' && option.key !== 'load_without_payload';
+      return option.key === 'load';
+    } else if (yAxis === 'load') {
+      return option.key === 'fuel';
     }
     return option.key !== yAxis;
   });
 
   const filteredYAxisOptions = axisOptions.filter((option) => {
     if (xAxis === 'fuel') {
-      return option.key === 'load' || option.key === 'load_without_payload';
-    } else if (xAxis === 'load' || xAxis === 'load_without_payload') {
-      return option.key !== 'load' && option.key !== 'load_without_payload';
+      return option.key === 'load';
+    } else if (xAxis === 'load') {
+      return option.key === 'fuel';
     }
     return option.key !== xAxis;
   });
@@ -262,6 +261,7 @@ const ChartCard: React.FC<any> = ({ chartData, index, onDelete, onUpdate }) => {
         <div className="cus-modal-body">
           <div className="chart-options-selector" style={{ marginTop: '15px' }}>
             <div className="form-input-group">
+              <label className="form-label">Vechiles</label>
               <Select
                 onChange={(list) => handleSelectedVechileList(list)}
                 isMulti
@@ -270,28 +270,24 @@ const ChartCard: React.FC<any> = ({ chartData, index, onDelete, onUpdate }) => {
                 placeholder="Select a Vechiles"
               />
             </div>
+            <div className="form-input-group">
+              <input className="form-input" type="date" />
+            </div>
             {(chartSelectedType === 'bar' ||
               chartSelectedType === 'doughnut') && (
-              <>
-                <div className="form-input-group">
-                  <input className="form-input" type="date" />
-                </div>
-                <div className="form-input-group">
-                  <select
-                    className="form-input"
-                    value={singleAxisValue}
-                    onChange={handleLoadForOtherCharts}
-                  >
-                    <option value="">Select Value</option>
-                    <option value="load_with_payload">
-                      Fuel Consumption (With Loaded)
-                    </option>
-                    <option value="load_without_payload">
-                      Fuel Consumption (With Unloaded)
-                    </option>
-                  </select>
-                </div>
-              </>
+              <div className="form-input-group">
+                <select
+                  className="form-input"
+                  value={singleAxisValue}
+                  onChange={handleLoadForOtherCharts}
+                >
+                  <option value="">Select Value</option>
+                  <option value="loaded">Fuel Consumption (With Loaded)</option>
+                  <option value="unloaded">
+                    Fuel Consumption (With Unloaded)
+                  </option>
+                </select>
+              </div>
             )}
             {chartSelectedType === 'line' && (
               <>
@@ -324,6 +320,11 @@ const ChartCard: React.FC<any> = ({ chartData, index, onDelete, onUpdate }) => {
                       </option>
                     ))}
                   </select>
+                </div>
+                <div className="notes">
+                  Note: Only fuel consumption with load is shown for the line
+                  chart. To view data for unloaded conditions, use a different
+                  chart type.
                 </div>
               </>
             )}
