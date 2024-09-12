@@ -1,10 +1,9 @@
 import * as Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
-import { datasets } from '../../datasets';
 
-const BarChart = (chartDetails: any) => {
+const BarChart: React.FC<any> = (chartDetails) => {
   const chartValue = chartDetails.chartDetails;
-
+  const mockData = chartDetails.mockArrayData;
   const dateRange = { startDate: '2024-08-01', endDate: '2024-08-10' };
 
   const getDatesInRange = (startDate: string, endDate: string): string[] => {
@@ -25,7 +24,7 @@ const BarChart = (chartDetails: any) => {
 
   const datesInRange = getDatesInRange(dateRange.startDate, dateRange.endDate);
 
-  const filteredData = datasets
+  const filteredData = mockData
     .filter((dataset: any) => {
       if (chartValue.selectedVechileList.includes(dataset.name)) {
         return dataset;
@@ -102,7 +101,7 @@ const BarChart = (chartDetails: any) => {
     },
     series: series.map((s: any) => ({
       ...s,
-      color: datasets.find((d) => d.label === s.name)?.color,
+      color: mockData.find((d: any) => d.label === s.name)?.color,
     })),
   };
 

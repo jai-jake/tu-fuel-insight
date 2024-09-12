@@ -1,9 +1,9 @@
 import * as Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
-import { datasets } from '../../datasets';
 
-const LineChart = (chartDetails: any) => {
+const LineChart: React.FC<any> = (chartDetails) => {
   const chartValue = chartDetails.chartDetails;
+  const mockData = chartDetails.mockArrayData;
   const { selectedVechileList, xAxis, yAxis } = chartValue;
 
   const loadCheck = (): boolean | undefined => {
@@ -18,7 +18,7 @@ const LineChart = (chartDetails: any) => {
   };
 
   // Filter datasets based on selected vehicles
-  const filteredData = datasets
+  const filteredData = mockData
     .filter((dataset: any) => selectedVechileList.includes(dataset.name))
     .map((dataset: any) => {
       const check = loadCheck();

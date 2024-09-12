@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { datasets } from '../../datasets';
 import BarChart from '../Charts/Bar';
 import BarNChart from '../Charts/BarN';
 import DoughnutChart from '../Charts/Doughnut';
@@ -8,16 +7,22 @@ import './ChartCard.css';
 import { Text, Icon, Button } from '@trackunit/react-components';
 import { useModal } from '@trackunit/react-modal';
 import { Select } from '@trackunit/react-form-components';
-import { chart } from 'highcharts';
-import FileUpload from '../FileUpload/FileUpload';
 
-const ChartCard: React.FC<any> = ({ chartData, index, onDelete, onUpdate }) => {
+const ChartCard: React.FC<any> = ({
+  chartData,
+  mockData,
+  index,
+  onDelete,
+  onUpdate,
+}) => {
   const chartValue = chartData;
+  const mockArrayData = mockData;
+  console.log('Mock Array Data', mockArrayData);
 
-  const vehicles: any[] = datasets.map((dataset: any) => {
+  const vehicles: any[] = mockArrayData.map((vechile: any) => {
     return {
-      label: dataset.label,
-      value: dataset.name,
+      label: vechile.label,
+      value: vechile.name,
     };
   });
 
@@ -51,7 +56,7 @@ const ChartCard: React.FC<any> = ({ chartData, index, onDelete, onUpdate }) => {
   };
 
   const [selectedVechileList, setSelectedVechileList] = useState<any[]>(
-    datasets.filter((dataset: any) => {
+    mockArrayData.filter((dataset: any) => {
       if (chartValue.selectedVechileList.includes(dataset.name)) {
         return {
           label: dataset.label,
@@ -165,7 +170,6 @@ const ChartCard: React.FC<any> = ({ chartData, index, onDelete, onUpdate }) => {
             </span>
           </div>
           <div className="chart-card-header-actions">
-            <FileUpload />
             <Icon
               name="PencilSquare"
               type="outline"
@@ -194,8 +198,11 @@ const ChartCard: React.FC<any> = ({ chartData, index, onDelete, onUpdate }) => {
                   className="selection-items"
                   key={vechileIndex}
                   style={{
-                    background: datasets.find((d) => d.name === vechile)?.color,
-                    color: datasets.find((d) => d.name === vechile)?.textColor,
+                    background: mockArrayData.find(
+                      (d: any) => d.name === vechile
+                    )?.color,
+                    color: mockArrayData.find((d: any) => d.name === vechile)
+                      ?.textColor,
                   }}
                 >
                   <span>{vechile}</span>
@@ -212,11 +219,18 @@ const ChartCard: React.FC<any> = ({ chartData, index, onDelete, onUpdate }) => {
         </div>
       </div>
       <div className="chart-content">
-        {chartValue.type === 'bar' && <BarNChart chartDetails={chartValue} />}
         {/* {chartValue.type === 'bar' && <BarChart chartDetails={chartValue} />} */}
-        {chartValue.type === 'line' && <LineChart chartDetails={chartValue} />}
+        {chartValue.type === 'bar' && (
+          <BarNChart chartDetails={chartValue} mockArrayData={mockArrayData} />
+        )}
+        {chartValue.type === 'line' && (
+          <LineChart chartDetails={chartValue} mockArrayData={mockArrayData} />
+        )}
         {chartValue.type === 'doughnut' && (
-          <DoughnutChart chartDetails={chartValue} />
+          <DoughnutChart
+            chartDetails={chartValue}
+            mockArrayData={mockArrayData}
+          />
         )}
       </div>
       <Modal className="custom-modal-size">

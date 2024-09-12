@@ -11,12 +11,29 @@ import { useAtom } from 'jotai';
 import { FileUploadAtom } from './components/FileUpload/FileUploadStore';
 import ChartCard from './components/ChartCard/ChartCard';
 import Draggable from 'react-draggable';
+import FileUpload from './components/FileUpload/FileUpload';
+import { set } from 'date-fns';
+
+interface MockData {
+  name: string;
+  label: string;
+  color: string;
+  textColor: string;
+  data: Array<{
+    timestamp: string;
+    weight: number;
+    terrain: string;
+    distanceKm: number;
+    fuel: number;
+  }>;
+}
 
 export const App = () => {
+  const [mockData, setMockData] = useState<MockData[]>(datasets);
   const { closeModal, openModal, Modal } = useModal({
     closeOnOutsideClick: true,
   });
-  const [uploadedData] = useAtom(FileUploadAtom);
+  const [uploadedData, setUploadedData] = useAtom(FileUploadAtom);
 
   const [chartGeneratorStage, setChartGeneratorStage] = useState('chartInfo');
 
@@ -40,10 +57,10 @@ export const App = () => {
     // },
   ]);
 
-  const vehicles: any[] = datasets.map((dataset: any) => {
+  const vehicles: any[] = mockData.map((vechile: any) => {
     return {
-      label: dataset.label,
-      value: dataset.name,
+      label: vechile.label,
+      value: vechile.name,
     };
   });
 
@@ -224,8 +241,14 @@ export const App = () => {
   //   );
   // };
 
+  const handleMockDataRevert = () => {
+    setMockData(datasets);
+    setUploadedData([]);
+  };
   useEffect(() => {
-    console.log('<<uploadedData>>', uploadedData);
+    if (uploadedData.length > 0) {
+      setMockData(uploadedData);
+    }
   }, [uploadedData]);
 
   return (
@@ -249,6 +272,10 @@ export const App = () => {
       {chartsList.length > 0 && (
         <div className="chart-content-wrapper">
           <div className="add-chart-button-wrapper">
+            <FileUpload />
+            {uploadedData.length > 0 && (
+              <Icon onClick={handleMockDataRevert} name="Backward"></Icon>
+            )}
             <Button
               className="cus-button button-black"
               suffix={<Icon name="Plus" size="small" />}
@@ -272,6 +299,7 @@ export const App = () => {
                   <ChartCard
                     key={index}
                     index={index}
+                    mockData={mockData}
                     chartData={chartData}
                     onDelete={handleDeleteChart}
                     onUpdate={handleUpadteChartData}

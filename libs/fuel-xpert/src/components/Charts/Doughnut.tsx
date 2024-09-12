@@ -1,10 +1,9 @@
 import * as Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
-import { datasets } from '../../datasets';
 
-const DoughnutChart = (chartDetails: any) => {
+const DoughnutChart: React.FC<any> = (chartDetails) => {
   const chartValue = chartDetails.chartDetails;
-
+  const mockData = chartDetails.mockArrayData;
   const dateRange = { startDate: '2024-08-01', endDate: '2024-08-10' };
 
   const getDatesInRange = (startDate: string, endDate: string): string[] => {
@@ -25,7 +24,7 @@ const DoughnutChart = (chartDetails: any) => {
 
   const datesInRange = getDatesInRange(dateRange.startDate, dateRange.endDate);
 
-  const filteredData = datasets
+  const filteredData = mockData
     .filter((dataset: any) => {
       if (chartValue.selectedVechileList.includes(dataset.name)) {
         return dataset;
@@ -85,7 +84,7 @@ const DoughnutChart = (chartDetails: any) => {
         name: 'Fuel Consumption',
         data: seriesData.map((s: any) => ({
           ...s,
-          color: datasets.find((d) => d.name === s.name)?.color,
+          color: mockData.find((d: any) => d.name === s.name)?.color,
         })),
         innerSize: '60%',
       },
