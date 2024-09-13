@@ -8,16 +8,12 @@ import './ChartCard.css';
 import { Text, Icon, Button } from '@trackunit/react-components';
 import { useModal } from '@trackunit/react-modal';
 import { Select } from '@trackunit/react-form-components';
+import { chart } from 'highcharts';
 
-const ChartCard: React.FC<any> = ({
-  chartData,
-  mockData,
-  index,
-  onDelete,
-  onUpdate,
-}) => {
-  const chartValue = chartData;
-  const mockArrayData = mockData;
+const ChartCard = (propsData: any) => {
+  console.log('Props Data', propsData);
+  const [chartValue, setChartValue] = useState(propsData.chartData);
+  const [mockArrayData, setMockArrayData] = useState(propsData.mockData);
   const [isZoomed, setIsZoomed] = useState(false);
   // console.log('Mock Array Data', mockArrayData);
 
@@ -117,6 +113,7 @@ const ChartCard: React.FC<any> = ({
 
   const handleUpdateChart = () => {
     const updatedChart = {
+      id: chartValue.id,
       title: chartTitle,
       description: chartDescription,
       type: chartSelectedType,
@@ -125,12 +122,13 @@ const ChartCard: React.FC<any> = ({
       yAxis: yAxis,
       singleAxisValue: singleAxisValue,
     };
-    onUpdate(index, updatedChart);
+    propsData.onUpdate(chartValue.id, updatedChart);
     closeModal();
   };
 
   const handleRemoveVechileFromList = (vechile: any) => {
     const updatedChart = {
+      id: chartValue.id,
       title: chartTitle,
       description: chartDescription,
       type: chartSelectedType,
@@ -141,52 +139,52 @@ const ChartCard: React.FC<any> = ({
       yAxis: yAxis,
       singleAxisValue: singleAxisValue,
     };
-    onUpdate(index, updatedChart);
+    propsData.onUpdate(updatedChart);
   };
 
   const handleDelete = (key: any) => {
-    onDelete(key);
+    propsData.onDelete(key);
   };
 
   const zoomInStyle: any = {
     position: 'absolute',
     top: '0',
     left: '0',
-    'min-width': '100vw',
-    'max-width': '100vw',
+    minWidth: '100vw',
+    maxWidth: '100vw',
     // height: '95vh',
-    'max-height': '100vh',
-    'z-index': '100',
-    'background-color': 'white',
+    maxHeight: '100vh',
+    zIndex: '100',
+    backgroundColor: 'white',
   };
 
   const zoomOutStyle: any = {
-    'min-width': '650px',
+    minWidth: '650px',
     width: '49.5%',
     // height: '500px',
     display: 'flex',
-    'flex-direction': 'column',
+    flexDirection: 'column',
     gap: '12px',
   };
 
   const zoomInCardStyle: any = {
     width: '100vw',
     // height: '90%',
-    'flex-grow': '1',
-    'padding-top': '20px',
+    flexGrow: '1',
+    paddingTop: '20px',
   };
 
   const zoomOutCardStyle: any = {
     width: '650px',
     // height: '500px',
-    'max-height': '500px',
-    'flex-grow': '1',
-    'padding-top': '20px',
+    maxHeight: '500px',
+    flexGrow: '1',
+    paddingTop: '20px',
   };
 
   return (
     <div
-      key={index}
+      key={chartValue.id}
       className="chart-card-wrapper"
       style={isZoomed ? zoomInStyle : zoomOutStyle}
     >
@@ -250,7 +248,7 @@ const ChartCard: React.FC<any> = ({
                 cursor: 'pointer',
                 color: '#6E6E6E',
               }}
-              onClick={() => handleDelete(index)}
+              onClick={() => handleDelete(chartValue.id)}
             />
           </div>
         </div>

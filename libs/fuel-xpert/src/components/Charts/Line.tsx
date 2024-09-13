@@ -3,8 +3,8 @@ import * as Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 import { useEffect, useState } from 'react';
 
-const LineChart: React.FC<any> = (chart: any) => {
-  const { chartDetails, mockArrayData } = chart;
+const LineChart = (propData: any) => {
+  const { chartDetails, mockArrayData } = propData;
   const { selectedVechileList, xAxis, yAxis } = chartDetails;
   const check = xAxis === 'load' || yAxis === 'load';
   // Filter datasets based on selected vehicles
@@ -19,7 +19,7 @@ const LineChart: React.FC<any> = (chart: any) => {
         return dataset;
       });
     setChartData(filteredData);
-  }, [chart, check, mockArrayData, selectedVechileList]);
+  }, [propData, check, mockArrayData, selectedVechileList]);
 
   const axis = (axis: string): string => {
     if (axis === 'fuel') {
@@ -35,6 +35,8 @@ const LineChart: React.FC<any> = (chart: any) => {
     data.data.forEach((set: any) => {
       dataArr.push({ x: set[axis(xAxis)], y: set[axis(yAxis)] });
     });
+
+    dataArr.sort((a: any, b: any) => a.x - b.x);
     console.log('lineChartData', JSON.parse(JSON.stringify(dataArr)));
     return JSON.parse(JSON.stringify(dataArr));
   };

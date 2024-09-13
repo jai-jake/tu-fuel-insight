@@ -30,12 +30,22 @@ interface MockData {
 
 export const App = () => {
   const [mockData, setMockData] = useState<MockData[]>(datasets);
-  const { closeModal, openModal, Modal } = useModal({
+  const {
+    closeModal,
+    openModal: handleOpenModal,
+    Modal,
+  } = useModal({
     closeOnOutsideClick: true,
   });
+
+  const openModal = (stage: any, event: any) => {
+    setChartGeneratorStage(stage);
+    handleOpenModal(event);
+  };
+
   const [uploadedData, setUploadedData] = useAtom(FileUploadAtom);
 
-  const [chartGeneratorStage, setChartGeneratorStage] = useState('chartInfo');
+  const [chartGeneratorStage, setChartGeneratorStage] = useState('');
 
   const [chartsList, setChartsList] = useState<any[]>([
     // {
@@ -156,6 +166,7 @@ export const App = () => {
 
   const handleGenerateChart = () => {
     const chartData = {
+      id: chartsList.length + 1,
       type: chartSelectedType,
       title: chartTitle,
       description: chartDescription,
@@ -166,21 +177,21 @@ export const App = () => {
       yAxis: yAxis,
     };
     setChartsList([...chartsList, chartData]);
-    setChartGeneratorStage('chartInfo');
+    setChartGeneratorStage('');
     clearAllFields();
     closeModal();
   };
 
-  const handleDeleteChart = (index: number) => {
+  const handleDeleteChart = (id: number) => {
     const updatedChartsList = chartsList.filter(
-      (chartData, chartIndex) => chartIndex !== index
+      (chartData) => chartData.id !== id
     );
     setChartsList(updatedChartsList);
   };
 
-  const handleUpadteChartData = (index: number, updatedData: any) => {
-    const updatedChartsList = chartsList.map((chartData, chartIndex) => {
-      if (chartIndex === index) {
+  const handleUpadteChartData = (updatedData: any) => {
+    const updatedChartsList = chartsList.map((chartData) => {
+      if (chartData.id == updatedData.id) {
         return updatedData;
       }
       return chartData;
@@ -245,6 +256,7 @@ export const App = () => {
     setMockData(datasets);
     setUploadedData([]);
   };
+
   useEffect(() => {
     if (uploadedData.length > 0) {
       setMockData(uploadedData);
@@ -254,7 +266,11 @@ export const App = () => {
   return (
     <div className="main-wrapper">
       {chartsList.length === 0 && (
-        <div className="report-card-warpper" onClick={openModal}>
+        <div
+          className="report-card-warpper"
+          // onClick={() => handleOpenModal('chartInfo')}
+          onClick={(e) => openModal('chartInfo', e)}
+        >
           <div className="inner-card-wrapper">
             <Icon
               name="PresentationChartLine"
@@ -281,13 +297,13 @@ export const App = () => {
               </Button>
             )}
             <FileUpload />
-            <Button className="cus-button button-black" onClick={openModal}>
+            <Button
+              className="cus-button button-black"
+              onClick={(e) => openModal('chartInfo', e)}
+            >
               Add a New Chart
             </Button>
           </div>
-          {/* <div className="chart-content">
-            <ChartCard chartListData={chartsList} />
-          </div> */}
           <div className="chart-content">
             {chartsList.map((chartData: any, index: number) => {
               return (
@@ -296,10 +312,8 @@ export const App = () => {
                 //   handle=".drag-handle"
                 //   onStop={(e, data) => handleStop(e, data, index)}
                 // >
-                <div>
+                <div key={index}>
                   <ChartCard
-                    key={index}
-                    index={index}
                     mockData={mockData}
                     chartData={chartData}
                     onDelete={handleDeleteChart}

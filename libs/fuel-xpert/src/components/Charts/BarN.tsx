@@ -3,9 +3,9 @@
 import * as Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 
-const BarChart: React.FC<any> = (chartDetails) => {
-  const chartValue = chartDetails.chartDetails;
-  const mockData = chartDetails.mockArrayData;
+const BarChart = (propData: any) => {
+  const chartValue = propData.chartDetails;
+  const mockData = propData.mockArrayData;
   const dateRange = { startDate: '2024-08-01', endDate: '2024-08-10' };
 
   const getDatesInRange = (startDate: string, endDate: string): string[] => {
