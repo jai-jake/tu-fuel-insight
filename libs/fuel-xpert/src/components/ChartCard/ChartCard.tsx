@@ -18,6 +18,7 @@ const ChartCard: React.FC<any> = ({
 }) => {
   const chartValue = chartData;
   const mockArrayData = mockData;
+  const [isZoomed, setIsZoomed] = useState(false);
   // console.log('Mock Array Data', mockArrayData);
 
   const vehicles: any[] = mockArrayData.map((vechile: any) => {
@@ -147,8 +148,48 @@ const ChartCard: React.FC<any> = ({
     onDelete(key);
   };
 
+  const zoomInStyle: any = {
+    position: 'absolute',
+    top: '0',
+    left: '0',
+    'min-width': '100vw',
+    'max-width': '100vw',
+    // height: '95vh',
+    'max-height': '100vh',
+    'z-index': '100',
+    'background-color': 'white',
+  };
+
+  const zoomOutStyle: any = {
+    'min-width': '650px',
+    width: '49.5%',
+    // height: '500px',
+    display: 'flex',
+    'flex-direction': 'column',
+    gap: '12px',
+  };
+
+  const zoomInCardStyle: any = {
+    width: '100vw',
+    // height: '90%',
+    'flex-grow': '1',
+    'padding-top': '20px',
+  };
+
+  const zoomOutCardStyle: any = {
+    width: '650px',
+    // height: '500px',
+    'max-height': '500px',
+    'flex-grow': '1',
+    'padding-top': '20px',
+  };
+
   return (
-    <div key={index} className="chart-card-wrapper">
+    <div
+      key={index}
+      className="chart-card-wrapper"
+      style={isZoomed ? zoomInStyle : zoomOutStyle}
+    >
       <div className="chart-card-header-wrapper">
         <div className="chart-card-title-wrapper">
           <div className="chart-card-header-title">
@@ -180,6 +221,28 @@ const ChartCard: React.FC<any> = ({
               }}
               onClick={openModal}
             />
+            {!isZoomed && (
+              <Icon
+                name="ArrowsPointingOut"
+                type="outline"
+                style={{
+                  cursor: 'pointer',
+                  color: '#6E6E6E',
+                }}
+                onClick={() => setIsZoomed(!isZoomed)}
+              ></Icon>
+            )}
+            {isZoomed && (
+              <Icon
+                name="ArrowsPointingIn"
+                type="outline"
+                style={{
+                  cursor: 'pointer',
+                  color: '#6E6E6E',
+                }}
+                onClick={() => setIsZoomed(!isZoomed)}
+              ></Icon>
+            )}
             <Icon
               name="Trash"
               type="outline"
@@ -219,7 +282,10 @@ const ChartCard: React.FC<any> = ({
           )}
         </div>
       </div>
-      <div className="chart-content">
+      <div
+        className="chart-content"
+        style={isZoomed ? zoomInCardStyle : zoomOutCardStyle}
+      >
         {/* {chartValue.type === 'bar' && <BarChart chartDetails={chartValue} />} */}
         {chartValue.type === 'bar' && (
           <BarNChart chartDetails={chartValue} mockArrayData={mockArrayData} />

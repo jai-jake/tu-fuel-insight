@@ -273,7 +273,12 @@ export const App = () => {
         <div className="chart-content-wrapper">
           <div className="add-chart-button-wrapper">
             {uploadedData.length > 0 && (
-              <Icon onClick={handleMockDataRevert} name="Backward"></Icon>
+              <Button
+                className="cus-button button-black"
+                onClick={handleMockDataRevert}
+              >
+                Revert Data
+              </Button>
             )}
             <FileUpload />
             <Button className="cus-button button-black" onClick={openModal}>
