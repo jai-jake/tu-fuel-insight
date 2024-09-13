@@ -1,3 +1,6 @@
+/* eslint-disable array-callback-return */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import * as Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 

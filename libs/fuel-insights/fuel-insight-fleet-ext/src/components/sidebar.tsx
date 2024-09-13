@@ -39,8 +39,8 @@ const Sidebar: React.FC<SidebarProps> = ({
   const handleVehicleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
     setSelectedVehicles((prevSelected: string[]) => {
-      const newSelected = event.target.checked 
-        ? [...prevSelected, value] 
+      const newSelected = event.target.checked
+        ? [...prevSelected, value]
         : prevSelected.filter(vehicle => vehicle !== value);
       if (newSelected.length === 0) {
         setXAxis('');
@@ -77,9 +77,9 @@ const Sidebar: React.FC<SidebarProps> = ({
           <label>Vehicles List</label>
           {vehicles.map((vehicle, index) => (
             <div key={index} className='selction-boxs'>
-              <input 
-                type="checkbox" 
-                value={vehicle} 
+              <input
+                type="checkbox"
+                value={vehicle}
                 onChange={handleVehicleChange}
                 checked={selectedVehicles.includes(vehicle)}
               />
@@ -93,7 +93,7 @@ const Sidebar: React.FC<SidebarProps> = ({
           <label>Axis Selection</label>
           <div className='axis-selection'>
             <div className='axis'>
-              <label>X-Axis</label>
+              <label>x-axis</label>
               <select name='x-axis' value={xAxis} onChange={handleXAxisChange}>
                 <option value="">Select Value</option>
                 {filteredXAxisOptions.map(option => (

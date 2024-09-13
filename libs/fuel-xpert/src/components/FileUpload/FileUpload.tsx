@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useRef } from 'react';
 import * as XLSX from 'xlsx';
-import { Icon } from '@trackunit/react-components';
+import { Button, Icon } from '@trackunit/react-components';
 import { useAtom } from 'jotai';
 import { FileUploadAtom } from './FileUploadStore';
 import { format } from 'date-fns';
@@ -143,13 +143,9 @@ const FileUpload = () => {
         ref={fileInputRef} // Bind the input ref
         onChange={handleFileUpload}
       />
-
-      {/* Icon to trigger the file upload */}
-      <Icon
-        name="DocumentPlus"
-        onClick={handleIconClick}
-        style={{ fontSize: '24px', cursor: 'pointer' }}
-      />
+      <Button className="cus-button button-black" onClick={handleIconClick}>
+        Upload Data
+      </Button>
     </div>
   );
 };

@@ -1,5 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from 'react';
-import BarChart from '../Charts/Bar';
+// import BarChart from '../Charts/Bar';
 import BarNChart from '../Charts/BarN';
 import DoughnutChart from '../Charts/Doughnut';
 import LineChart from '../Charts/Line';
@@ -17,7 +18,7 @@ const ChartCard: React.FC<any> = ({
 }) => {
   const chartValue = chartData;
   const mockArrayData = mockData;
-  console.log('Mock Array Data', mockArrayData);
+  // console.log('Mock Array Data', mockArrayData);
 
   const vehicles: any[] = mockArrayData.map((vechile: any) => {
     return {
@@ -233,124 +234,133 @@ const ChartCard: React.FC<any> = ({
           />
         )}
       </div>
-      <Modal className="custom-modal-size">
+      <Modal className="custom-modal-size-auto">
         <div className="cus-modal-header">
           <Button className="cus-button-close" onClick={closeModal}>
             X
           </Button>
         </div>
         <div className="cus-modal-body">
-          <div className="form-input-group">
-            <label className="form-label">Chart Title</label>
-            <select
-              className="form-input"
-              value={chartSelectedType}
-              onChange={handleChartTypeChange}
-            >
-              <option value="">Select a Chart</option>
-              <option value="line">Line Chart</option>
-              <option value="bar">Bar Chart</option>
-              <option value="doughnut">Doughnut Chart</option>
-            </select>
-          </div>
-          <div className="form-input-group">
-            <label className="form-label">Chart Title</label>
-            <input
-              className="form-input"
-              type="text"
-              value={chartTitle}
-              onInput={handleChartTitleChange}
-            />
-          </div>
-          <div className="form-input-group">
-            <label className="form-label">Chart Describtion</label>
-            <textarea
-              className="form-input"
-              rows={3}
-              value={chartDescription}
-              onInput={handleChartDescriptionChange}
-            ></textarea>
-          </div>
-        </div>
-        <div className="cus-modal-body">
-          <div className="chart-options-selector" style={{ marginTop: '15px' }}>
-            <div className="form-input-group">
-              <label className="form-label">Vechiles</label>
-              <Select
-                onChange={(list) => handleSelectedVechileList(list)}
-                isMulti
-                maxMenuHeight={300}
-                options={vehicles}
-                placeholder="Select a Vechiles"
-              />
-            </div>
-            <div className="form-input-group">
-              <input className="form-input" type="date" />
-            </div>
-            {(chartSelectedType === 'bar' ||
-              chartSelectedType === 'doughnut') && (
+          <div style={{ display: 'flex', flexDirection: 'row', width: '100%' }}>
+            <div style={{ width: '50%' }}>
               <div className="form-input-group">
+                <label className="form-label">Chart Title</label>
                 <select
                   className="form-input"
-                  value={singleAxisValue}
-                  onChange={handleLoadForOtherCharts}
+                  value={chartSelectedType}
+                  onChange={handleChartTypeChange}
                 >
-                  <option value="">Select Value</option>
-                  <option value="loaded">Fuel Consumption (With Loaded)</option>
-                  <option value="unloaded">
-                    Fuel Consumption (With Unloaded)
-                  </option>
+                  <option value="">Select a Chart</option>
+                  <option value="line">Line Chart</option>
+                  <option value="bar">Bar Chart</option>
+                  <option value="doughnut">Doughnut Chart</option>
                 </select>
               </div>
-            )}
-            {chartSelectedType === 'line' && (
-              <>
-                <div className="form-input-group">
-                  <label className="form-label">X Axis</label>
-                  <select
-                    className="form-input"
-                    value={xAxis}
-                    onChange={handleXAxisChange}
-                  >
-                    <option value="">Select X Axis</option>
-                    {filteredXAxisOptions.map((option) => (
-                      <option key={option.key} value={option.key}>
-                        {option.value}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-                <div className="form-input-group">
-                  <label className="form-label">Y Axis</label>
-                  <select
-                    className="form-input"
-                    value={yAxis}
-                    onChange={handleYAxisChange}
-                  >
-                    <option value="">Select Y Axis</option>
-                    {filteredYAxisOptions.map((option) => (
-                      <option key={option.key} value={option.key}>
-                        {option.value}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-                <div className="notes">
-                  Note: Only fuel consumption with load is shown for the line
-                  chart. To view data for unloaded conditions, use a different
-                  chart type.
-                </div>
-              </>
-            )}
-          </div>
-          <div className="form-button-group-vertical">
-            <button
-              className="cus-button button-black"
-              onClick={handleUpdateChart}
+              <div className="form-input-group">
+                <label className="form-label">Chart Title</label>
+                <input
+                  className="form-input"
+                  type="text"
+                  value={chartTitle}
+                  placeholder="Give Your Chart a Title"
+                  onInput={handleChartTitleChange}
+                />
+              </div>
+              <div className="form-input-group">
+                <label className="form-label">Chart Describtion</label>
+                <textarea
+                  className="form-input"
+                  rows={3}
+                  value={chartDescription}
+                  placeholder="Give Your Chart a Describtion"
+                  onInput={handleChartDescriptionChange}
+                ></textarea>
+              </div>
+            </div>
+            <div
+              className="chart-options-selector"
+              style={{ width: '50%', paddingTop: '0' }}
             >
-              Update
-            </button>
+              <div className="form-input-group">
+                <label className="form-label">Vechiles</label>
+                <Select
+                  onChange={(list) => handleSelectedVechileList(list)}
+                  isMulti
+                  maxMenuHeight={300}
+                  options={vehicles}
+                  placeholder="Select a Vechiles"
+                />
+              </div>
+              <div className="form-input-group">
+                <input className="form-input" type="date" />
+              </div>
+              {(chartSelectedType === 'bar' ||
+                chartSelectedType === 'doughnut') && (
+                <div className="form-input-group">
+                  <select
+                    className="form-input"
+                    value={singleAxisValue}
+                    onChange={handleLoadForOtherCharts}
+                  >
+                    <option value="">Select Value</option>
+                    <option value="loaded">
+                      Fuel Consumption (With Loaded)
+                    </option>
+                    <option value="unloaded">
+                      Fuel Consumption (With Unloaded)
+                    </option>
+                  </select>
+                </div>
+              )}
+              {chartSelectedType === 'line' && (
+                <>
+                  <div className="form-input-group">
+                    <label className="form-label">x-axis</label>
+                    <select
+                      className="form-input"
+                      value={xAxis}
+                      onChange={handleXAxisChange}
+                    >
+                      <option value="">Select x-axis</option>
+                      {filteredXAxisOptions.map((option) => (
+                        <option key={option.key} value={option.key}>
+                          {option.value}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                  <div className="form-input-group">
+                    <label className="form-label">y-axis</label>
+                    <select
+                      className="form-input"
+                      value={yAxis}
+                      onChange={handleYAxisChange}
+                    >
+                      <option value="">Select y-axis</option>
+                      {filteredYAxisOptions.map((option) => (
+                        <option key={option.key} value={option.key}>
+                          {option.value}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                  <div className="notes">
+                    Note: Only fuel consumption with load is shown for the line
+                    chart. To view data for unloaded conditions, use a different
+                    chart type.
+                  </div>
+                </>
+              )}
+            </div>
           </div>
+        </div>
+        <div className="form-button-group-vertical">
+          <button
+            className="cus-button button-black"
+            onClick={handleUpdateChart}
+          >
+            Update
+          </button>
         </div>
       </Modal>
     </div>

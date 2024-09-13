@@ -1,39 +1,25 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import * as Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
+import { useEffect, useState } from 'react';
 
-const LineChart: React.FC<any> = (chartDetails) => {
-  const chartValue = chartDetails.chartDetails;
-  const mockData = chartDetails.mockArrayData;
-  const { selectedVechileList, xAxis, yAxis } = chartValue;
-
-  const loadCheck = (): boolean | undefined => {
-    if (chartValue.xAxis === 'load' || chartValue.yAxis === 'load') {
-      return true;
-    } else if (
-      chartValue.xAxis === 'load_without_payload' ||
-      chartValue.yAxis === 'load_without_payload'
-    ) {
-      return false;
-    }
-  };
-
+const LineChart: React.FC<any> = (chart: any) => {
+  const { chartDetails, mockArrayData } = chart;
+  const { selectedVechileList, xAxis, yAxis } = chartDetails;
+  const check = xAxis === 'load' || yAxis === 'load';
   // Filter datasets based on selected vehicles
-  const filteredData = mockData
-    .filter((dataset: any) => selectedVechileList.includes(dataset.name))
-    .map((dataset: any) => {
-      const check = loadCheck();
-      dataset.data = dataset.data.filter((set: any) => {
-        if (check !== undefined) {
-          if (check && set.weight > 0) {
-            return true;
-          } else if (check && set.weight === 0) {
-            return true;
-          }
-        }
-        return false;
+  const [chartData, setChartData] = useState([]);
+  useEffect(() => {
+    const filteredData = mockArrayData
+      .filter((dataset: any) => selectedVechileList.includes(dataset.name))
+      .map((dataset: any) => {
+        dataset.data = dataset.data.filter(
+          (set: any) => check && (set.weight > 0 || set.weight === 0)
+        );
+        return dataset;
       });
-      return dataset;
-    });
+    setChartData(filteredData);
+  }, [chart, check, mockArrayData, selectedVechileList]);
 
   const axis = (axis: string): string => {
     if (axis === 'fuel') {
@@ -44,43 +30,44 @@ const LineChart: React.FC<any> = (chartDetails) => {
     return axis;
   };
 
+  const getChartData = (data: any) => {
+    const dataArr: any = [];
+    data.data.forEach((set: any) => {
+      dataArr.push({ x: set[axis(xAxis)], y: set[axis(yAxis)] });
+    });
+    console.log('lineChartData', JSON.parse(JSON.stringify(dataArr)));
+    return JSON.parse(JSON.stringify(dataArr));
+  };
+
   const options: Highcharts.Options = {
     title: {
       text: '',
     },
+    legend: {
+      enabled: false,
+    },
     chart: {
       type: 'line',
+      backgroundColor: '#fafafa',
     },
-    series: filteredData.map((data: any) => {
-      return {
-        type: 'line',
-        data: data.data.map((set: any) => {
-          return [set[axis(xAxis)], set[axis(yAxis)]];
-        }),
-        name: data.label,
-        color: data.color,
-      };
-    }),
     yAxis: {
       title: {
-        text:
-          yAxis === 'fuel'
-            ? 'Fuel Consumption'
-            : yAxis === 'load_without_payload'
-            ? 'Unloaded'
-            : 'Load',
+        text: yAxis === 'fuel' ? 'Fuel Consumption' : 'Load',
       },
     },
     xAxis: {
       title: {
-        text:
-          xAxis === 'fuel'
-            ? 'Fuel Consumption'
-            : xAxis === 'load_without_payload'
-            ? 'Unloaded'
-            : 'Load',
+        text: xAxis === 'fuel' ? 'Fuel Consumption' : 'Load',
       },
     },
+    series: chartData.map((data: any) => {
+      return {
+        type: 'line',
+        name: data.label,
+        color: data.color,
+        data: getChartData(data),
+      };
+    }),
   };
 
   return <HighchartsReact highcharts={Highcharts} options={options} />;

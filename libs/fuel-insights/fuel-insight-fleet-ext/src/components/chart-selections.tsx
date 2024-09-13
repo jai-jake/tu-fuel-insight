@@ -396,7 +396,7 @@ const ChartSelection: React.FC<any> = ({ passChartDataToApp }) => {
           <label>Axis Selection</label>
           <div className="axis-selection">
             <div className="axis">
-              <label>X-Axis</label>
+              <label>x-axis</label>
               <select name="x-axis" value={xAxis} onChange={handleXAxisChange}>
                 <option value="">Select Value</option>
                 {filteredXAxisOptions.map((option) => (
@@ -407,7 +407,7 @@ const ChartSelection: React.FC<any> = ({ passChartDataToApp }) => {
               </select>
             </div>
             <div className="axis">
-              <label>Y-Axis</label>
+              <label>y-axis</label>
               <select name="y-axis" value={yAxis} onChange={handleYAxisChange}>
                 <option value="">Select Value</option>
                 {filteredYAxisOptions.map((option) => (

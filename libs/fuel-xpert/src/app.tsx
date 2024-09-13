@@ -272,16 +272,12 @@ export const App = () => {
       {chartsList.length > 0 && (
         <div className="chart-content-wrapper">
           <div className="add-chart-button-wrapper">
-            <FileUpload />
             {uploadedData.length > 0 && (
               <Icon onClick={handleMockDataRevert} name="Backward"></Icon>
             )}
-            <Button
-              className="cus-button button-black"
-              suffix={<Icon name="Plus" size="small" />}
-              onClick={openModal}
-            >
-              Add Chart
+            <FileUpload />
+            <Button className="cus-button button-black" onClick={openModal}>
+              Add a New Chart
             </Button>
           </div>
           {/* <div className="chart-content">
@@ -333,6 +329,7 @@ export const App = () => {
               <input
                 className="form-input"
                 type="text"
+                placeholder="Give Your Chart a Title"
                 onInput={handleChartTitleChange}
               />
             </div>
@@ -341,6 +338,7 @@ export const App = () => {
               <textarea
                 className="form-input"
                 rows={3}
+                placeholder="Give Your Chart a Describtion"
                 onInput={handleChartDescriptionChange}
               ></textarea>
             </div>
@@ -388,9 +386,9 @@ export const App = () => {
               {chartSelectedType === 'line' && (
                 <>
                   <div className="form-input-group">
-                    <label className="form-label">X Axis</label>
+                    <label className="form-label">x-axis</label>
                     <select className="form-input" onChange={handleXAxisChange}>
-                      <option value="">Select X Axis</option>
+                      <option value="">Select x-axis</option>
                       {filteredXAxisOptions.map((option) => (
                         <option key={option.key} value={option.key}>
                           {option.value}
@@ -399,9 +397,9 @@ export const App = () => {
                     </select>
                   </div>
                   <div className="form-input-group">
-                    <label className="form-label">Y Axis</label>
+                    <label className="form-label">y-axis</label>
                     <select className="form-input" onChange={handleYAxisChange}>
-                      <option value="">Select Y Axis</option>
+                      <option value="">Select y-axis</option>
                       {filteredYAxisOptions.map((option) => (
                         <option key={option.key} value={option.key}>
                           {option.value}
