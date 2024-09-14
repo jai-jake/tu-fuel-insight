@@ -1,7 +1,7 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import './app.css';
-import { datasets } from './datasets';
 import { Text, Button, Icon } from '@trackunit/react-components';
 import { Select } from '@trackunit/react-form-components';
 
@@ -10,9 +10,9 @@ import { useEffect, useState } from 'react';
 import { useAtom } from 'jotai';
 import { FileUploadAtom } from './components/FileUpload/FileUploadStore';
 import ChartCard from './components/ChartCard/ChartCard';
-import Draggable from 'react-draggable';
 import FileUpload from './components/FileUpload/FileUpload';
-import { set } from 'date-fns';
+import { MockDataAtom } from './store/mockDataStore';
+import MockDataProvider from './store/mockDataProvider';
 
 interface MockData {
   name: string;
@@ -29,7 +29,6 @@ interface MockData {
 }
 
 export const App = () => {
-  const [mockData, setMockData] = useState<MockData[]>(datasets);
   const {
     closeModal,
     openModal: handleOpenModal,
@@ -42,37 +41,23 @@ export const App = () => {
     setChartGeneratorStage(stage);
     handleOpenModal(event);
   };
-
+  const [mockData] = useAtom(MockDataAtom);
   const [uploadedData, setUploadedData] = useAtom(FileUploadAtom);
 
   const [chartGeneratorStage, setChartGeneratorStage] = useState('');
+  const [chartsList, setChartsList] = useState<any[]>([]);
+  const [vehicles, setVehicles] = useState<any[]>([]);
 
-  const [chartsList, setChartsList] = useState<any[]>([
-    // {
-    //   type: 'bar',
-    //   title: 'Fuel Consumption',
-    //   description: 'Fuel Consumption of Vehicles',
-    //   selectedVechileList: ['vehicle1', 'vehicle2'],
-    //   dateRange: '2024-08-01',
-    //   singleAxisValue: 'load_with_payload',
-    // },
-    // {
-    //   type: 'line',
-    //   title: 'Fuel Consumption',
-    //   description: 'Fuel Consumption of Vehicles',
-    //   selectedVechileList: ['vehicle1', 'vehicle2'],
-    //   dateRange: '2024-08-01',
-    //   xAxis: 'load',
-    //   yAxis: 'fuel',
-    // },
-  ]);
-
-  const vehicles: any[] = mockData.map((vechile: any) => {
-    return {
-      label: vechile.label,
-      value: vechile.name,
-    };
-  });
+  useEffect(() => {
+    const vehi: any[] = [];
+    mockData.forEach((vechile: any) => {
+      vehi.push({
+        label: vechile.label,
+        value: vechile.name,
+      });
+    });
+    setVehicles(vehi);
+  }, []);
 
   const [chartSelectedType, setChartSelectedType] = useState<string>('');
   const handleChartTypeChange = (
@@ -186,12 +171,12 @@ export const App = () => {
     const updatedChartsList = chartsList.filter(
       (chartData) => chartData.id !== id
     );
-    setChartsList(updatedChartsList);
+    setChartsList(JSON.parse(JSON.stringify(updatedChartsList)));
   };
 
-  const handleUpadteChartData = (updatedData: any) => {
+  const handleUpadteChartData = (id: number, updatedData: any) => {
     const updatedChartsList = chartsList.map((chartData) => {
-      if (chartData.id == updatedData.id) {
+      if (chartData.id === id) {
         return updatedData;
       }
       return chartData;
@@ -199,76 +184,15 @@ export const App = () => {
     setChartsList(updatedChartsList);
   };
 
-  // const handleStop = (e: any, data: any, index: number) => {
-  //   const newChartsList = [...chartsList];
-  //   const [movedItem] = newChartsList.splice(index, 1);
-  //   const newIndex = data.y > 0 ? index + 1 : index - 1;
-  //   newChartsList.splice(newIndex, 0, movedItem);
-  //   setChartsList(newChartsList);
-
-  //   // const updatedCards = [...chartsList];
-  //   // updatedCards[index] = { ...updatedCards[index], x: data.x, y: data.y };
-
-  //   // // Check if we need to swap positions with another card
-  //   // for (let i = 0; i < chartsList.length; i++) {
-  //   //   if (i !== index && isColliding(updatedCards[index], updatedCards[i])) {
-  //   //     // Swap positions of the two cards
-  //   //     const temp = { ...updatedCards[i] }; // Store card i's position
-  //   //     updatedCards[i] = {
-  //   //       ...updatedCards[i],
-  //   //       type: chartsList[i].type,
-  //   //       title: chartsList[i].title,
-  //   //       description: chartsList[i].description,
-  //   //       selectedVechileList: chartsList[i].selectedVechileList,
-  //   //       dateRange: chartsList[i].dateRange,
-  //   //       singleAxisValue: chartsList[i].singleAxisValue,
-  //   //       xAxis: chartsList[i].xAxis,
-  //   //       yAxis: chartsList[i].yAxis,
-  //   //     }; // Move card i to card index's position
-  //   //     updatedCards[index] = {
-  //   //       ...updatedCards[index],
-  //   //       type: chartsList[index].type,
-  //   //       title: chartsList[index].title,
-  //   //       description: chartsList[index].description,
-  //   //       selectedVechileList: chartsList[index].selectedVechileList,
-  //   //       dateRange: chartsList[index].dateRange,
-  //   //       singleAxisValue: chartsList[index].singleAxisValue,
-  //   //       xAxis: chartsList[index].xAxis,
-  //   //       yAxis: chartsList[index].yAxis,
-  //   //     }; // Move card index to card i's position
-  //   //     break;
-  //   //   }
-  //   // }
-
-  //   // setChartsList(updatedCards);
-  // };
-
-  // // Check if two cards are colliding
-  // const isColliding = (card1: any, card2: any): boolean => {
-  //   const buffer = 100; // Adjust the buffer for better overlap detection
-  //   return (
-  //     Math.abs(card1.x - card2.x) < buffer &&
-  //     Math.abs(card1.y - card2.y) < buffer
-  //   );
-  // };
-
   const handleMockDataRevert = () => {
-    setMockData(datasets);
     setUploadedData([]);
   };
-
-  useEffect(() => {
-    if (uploadedData.length > 0) {
-      setMockData(uploadedData);
-    }
-  }, [uploadedData]);
 
   return (
     <div className="main-wrapper">
       {chartsList.length === 0 && (
         <div
           className="report-card-warpper"
-          // onClick={() => handleOpenModal('chartInfo')}
           onClick={(e) => openModal('chartInfo', e)}
         >
           <div className="inner-card-wrapper">
@@ -307,20 +231,14 @@ export const App = () => {
           <div className="chart-content">
             {chartsList.map((chartData: any, index: number) => {
               return (
-                // <Draggable
-                //   key={index}
-                //   handle=".drag-handle"
-                //   onStop={(e, data) => handleStop(e, data, index)}
-                // >
                 <div key={index}>
                   <ChartCard
-                    mockData={mockData}
                     chartData={chartData}
                     onDelete={handleDeleteChart}
                     onUpdate={handleUpadteChartData}
+                    vehicles={vehicles}
                   />
                 </div>
-                // </Draggable>
               );
             })}
           </div>

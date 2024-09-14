@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useState } from 'react';
-// import BarChart from '../Charts/Bar';
+import { useEffect, useState } from 'react';
 import BarNChart from '../Charts/BarN';
 import DoughnutChart from '../Charts/Doughnut';
 import LineChart from '../Charts/Line';
@@ -8,21 +7,18 @@ import './ChartCard.css';
 import { Text, Icon, Button } from '@trackunit/react-components';
 import { useModal } from '@trackunit/react-modal';
 import { Select } from '@trackunit/react-form-components';
-import { chart } from 'highcharts';
+import { useAtom } from 'jotai';
+import { MockDataAtom } from '../../store/mockDataStore';
 
 const ChartCard = (propsData: any) => {
-  console.log('Props Data', propsData);
-  const [chartValue, setChartValue] = useState(propsData.chartData);
-  const [mockArrayData, setMockArrayData] = useState(propsData.mockData);
-  const [isZoomed, setIsZoomed] = useState(false);
-  // console.log('Mock Array Data', mockArrayData);
+  const [mockData] = useAtom(MockDataAtom);
 
-  const vehicles: any[] = mockArrayData.map((vechile: any) => {
-    return {
-      label: vechile.label,
-      value: vechile.name,
-    };
-  });
+  const [chartValue, setChartValue] = useState(propsData.chartData);
+  const [isZoomed, setIsZoomed] = useState(false);
+
+  useEffect(() => {
+    setChartValue(propsData.chartData);
+  }, [propsData]);
 
   const { closeModal, openModal, Modal } = useModal({
     closeOnOutsideClick: true,
@@ -54,7 +50,7 @@ const ChartCard = (propsData: any) => {
   };
 
   const [selectedVechileList, setSelectedVechileList] = useState<any[]>(
-    mockArrayData.filter((dataset: any) => {
+    mockData.filter((dataset: any) => {
       if (chartValue.selectedVechileList.includes(dataset.name)) {
         return {
           label: dataset.label,
@@ -152,7 +148,6 @@ const ChartCard = (propsData: any) => {
     left: '0',
     minWidth: '100vw',
     maxWidth: '100vw',
-    // height: '95vh',
     maxHeight: '100vh',
     zIndex: '100',
     backgroundColor: 'white',
@@ -161,7 +156,6 @@ const ChartCard = (propsData: any) => {
   const zoomOutStyle: any = {
     minWidth: '650px',
     width: '49.5%',
-    // height: '500px',
     display: 'flex',
     flexDirection: 'column',
     gap: '12px',
@@ -169,14 +163,12 @@ const ChartCard = (propsData: any) => {
 
   const zoomInCardStyle: any = {
     width: '100vw',
-    // height: '90%',
     flexGrow: '1',
     paddingTop: '20px',
   };
 
   const zoomOutCardStyle: any = {
     width: '650px',
-    // height: '500px',
     maxHeight: '500px',
     flexGrow: '1',
     paddingTop: '20px',
@@ -260,10 +252,9 @@ const ChartCard = (propsData: any) => {
                   className="selection-items"
                   key={vechileIndex}
                   style={{
-                    background: mockArrayData.find(
-                      (d: any) => d.name === vechile
-                    )?.color,
-                    color: mockArrayData.find((d: any) => d.name === vechile)
+                    background: mockData.find((d: any) => d.name === vechile)
+                      ?.color,
+                    color: mockData.find((d: any) => d.name === vechile)
                       ?.textColor,
                   }}
                 >
@@ -284,18 +275,10 @@ const ChartCard = (propsData: any) => {
         className="chart-content"
         style={isZoomed ? zoomInCardStyle : zoomOutCardStyle}
       >
-        {/* {chartValue.type === 'bar' && <BarChart chartDetails={chartValue} />} */}
-        {chartValue.type === 'bar' && (
-          <BarNChart chartDetails={chartValue} mockArrayData={mockArrayData} />
-        )}
-        {chartValue.type === 'line' && (
-          <LineChart chartDetails={chartValue} mockArrayData={mockArrayData} />
-        )}
+        {chartValue.type === 'bar' && <BarNChart chartDetails={chartValue} />}
+        {chartValue.type === 'line' && <LineChart chartDetails={chartValue} />}
         {chartValue.type === 'doughnut' && (
-          <DoughnutChart
-            chartDetails={chartValue}
-            mockArrayData={mockArrayData}
-          />
+          <DoughnutChart chartDetails={chartValue} />
         )}
       </div>
       <Modal className="custom-modal-size-auto">
@@ -351,7 +334,7 @@ const ChartCard = (propsData: any) => {
                   onChange={(list) => handleSelectedVechileList(list)}
                   isMulti
                   maxMenuHeight={300}
-                  options={vehicles}
+                  options={propsData.vehicles}
                   placeholder="Select a Vechiles"
                 />
               </div>

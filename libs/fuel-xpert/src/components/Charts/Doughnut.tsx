@@ -3,10 +3,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import * as Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
+import { useAtom } from 'jotai';
+import { MockDataAtom } from '../../store/mockDataStore';
 
 const DoughnutChart = (propData: any) => {
   const chartValue = propData.chartDetails;
-  const mockData = propData.mockArrayData;
+  const [mockData] = useAtom(MockDataAtom);
+  const mockDataCopy = JSON.parse(JSON.stringify(mockData));
   const dateRange = { startDate: '2024-08-01', endDate: '2024-08-10' };
 
   const getDatesInRange = (startDate: string, endDate: string): string[] => {
@@ -27,7 +30,7 @@ const DoughnutChart = (propData: any) => {
 
   const datesInRange = getDatesInRange(dateRange.startDate, dateRange.endDate);
 
-  const filteredData = mockData
+  const filteredData = mockDataCopy
     .filter((dataset: any) => {
       if (chartValue.selectedVechileList.includes(dataset.name)) {
         return dataset;
@@ -87,7 +90,7 @@ const DoughnutChart = (propData: any) => {
         name: 'Fuel Consumption',
         data: seriesData.map((s: any) => ({
           ...s,
-          color: mockData.find((d: any) => d.name === s.name)?.color,
+          color: mockDataCopy.find((d: any) => d.name === s.name)?.color,
         })),
         innerSize: '60%',
       },

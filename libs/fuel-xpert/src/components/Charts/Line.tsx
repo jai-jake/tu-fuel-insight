@@ -1,16 +1,21 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import * as Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
+import { useAtom } from 'jotai';
 import { useEffect, useState } from 'react';
+import { MockDataAtom } from '../../store/mockDataStore';
 
 const LineChart = (propData: any) => {
-  const { chartDetails, mockArrayData } = propData;
+  const { chartDetails } = propData;
+  const [mockData] = useAtom(MockDataAtom);
   const { selectedVechileList, xAxis, yAxis } = chartDetails;
   const check = xAxis === 'load' || yAxis === 'load';
   // Filter datasets based on selected vehicles
   const [chartData, setChartData] = useState([]);
+  const mockDataCopy = JSON.parse(JSON.stringify(mockData));
   useEffect(() => {
-    const filteredData = mockArrayData
+    const filteredData = mockDataCopy
       .filter((dataset: any) => selectedVechileList.includes(dataset.name))
       .map((dataset: any) => {
         dataset.data = dataset.data.filter(
@@ -19,7 +24,7 @@ const LineChart = (propData: any) => {
         return dataset;
       });
     setChartData(filteredData);
-  }, [propData, check, mockArrayData, selectedVechileList]);
+  }, [propData]);
 
   const axis = (axis: string): string => {
     if (axis === 'fuel') {
@@ -50,7 +55,7 @@ const LineChart = (propData: any) => {
     },
     chart: {
       type: 'line',
-      backgroundColor: '#fafafa',
+      backgroundColor: '#fff',
     },
     yAxis: {
       title: {
