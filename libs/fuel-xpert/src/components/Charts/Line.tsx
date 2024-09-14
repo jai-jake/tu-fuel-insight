@@ -42,7 +42,6 @@ const LineChart = (propData: any) => {
     });
 
     dataArr.sort((a: any, b: any) => a.x - b.x);
-    console.log('lineChartData', JSON.parse(JSON.stringify(dataArr)));
     return JSON.parse(JSON.stringify(dataArr));
   };
 

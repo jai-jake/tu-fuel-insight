@@ -291,20 +291,20 @@ const ChartCard = (propsData: any) => {
           <div style={{ display: 'flex', flexDirection: 'row', width: '100%' }}>
             <div style={{ width: '50%' }}>
               <div className="form-input-group">
-                <label className="form-label">Chart Title</label>
+                <label className="form-label">Chart Type</label>
                 <select
                   className="form-input"
                   value={chartSelectedType}
                   onChange={handleChartTypeChange}
                 >
-                  <option value="">Select a Chart</option>
-                  <option value="line">Line Chart</option>
-                  <option value="bar">Bar Chart</option>
-                  <option value="doughnut">Doughnut Chart</option>
+                  <option value="">Select</option>
+                  <option value="line">Line</option>
+                  <option value="bar">Bar</option>
+                  <option value="doughnut">Doughnut</option>
                 </select>
               </div>
               <div className="form-input-group">
-                <label className="form-label">Chart Title</label>
+                <label className="form-label">Title</label>
                 <input
                   className="form-input"
                   type="text"
@@ -314,12 +314,12 @@ const ChartCard = (propsData: any) => {
                 />
               </div>
               <div className="form-input-group">
-                <label className="form-label">Chart Describtion</label>
+                <label className="form-label">Description</label>
                 <textarea
                   className="form-input"
                   rows={3}
                   value={chartDescription}
-                  placeholder="Give Your Chart a Describtion"
+                  placeholder="Give Your Chart a Description"
                   onInput={handleChartDescriptionChange}
                 ></textarea>
               </div>
@@ -329,13 +329,13 @@ const ChartCard = (propsData: any) => {
               style={{ width: '50%', paddingTop: '0' }}
             >
               <div className="form-input-group">
-                <label className="form-label">Vechiles</label>
+                <label className="form-label">Vehicles</label>
                 <Select
                   onChange={(list) => handleSelectedVechileList(list)}
                   isMulti
                   maxMenuHeight={300}
                   options={propsData.vehicles}
-                  placeholder="Select a Vechiles"
+                  placeholder="Select Vehicles"
                 />
               </div>
               <div className="form-input-group">
@@ -349,7 +349,7 @@ const ChartCard = (propsData: any) => {
                     value={singleAxisValue}
                     onChange={handleLoadForOtherCharts}
                   >
-                    <option value="">Select Value</option>
+                    <option value="">Select</option>
                     <option value="loaded">
                       Fuel Consumption (With Loaded)
                     </option>
@@ -368,7 +368,7 @@ const ChartCard = (propsData: any) => {
                       value={xAxis}
                       onChange={handleXAxisChange}
                     >
-                      <option value="">Select x-axis</option>
+                      <option value="">Select</option>
                       {filteredXAxisOptions.map((option) => (
                         <option key={option.key} value={option.key}>
                           {option.value}
@@ -383,7 +383,7 @@ const ChartCard = (propsData: any) => {
                       value={yAxis}
                       onChange={handleYAxisChange}
                     >
-                      <option value="">Select y-axis</option>
+                      <option value="">Select</option>
                       {filteredYAxisOptions.map((option) => (
                         <option key={option.key} value={option.key}>
                           {option.value}

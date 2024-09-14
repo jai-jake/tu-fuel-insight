@@ -4,7 +4,6 @@
 import './app.css';
 import { Text, Button, Icon } from '@trackunit/react-components';
 import { Select } from '@trackunit/react-form-components';
-
 import { useModal } from '@trackunit/react-modal';
 import { useEffect, useState } from 'react';
 import { useAtom } from 'jotai';
@@ -12,7 +11,6 @@ import { FileUploadAtom } from './components/FileUpload/FileUploadStore';
 import ChartCard from './components/ChartCard/ChartCard';
 import FileUpload from './components/FileUpload/FileUpload';
 import { MockDataAtom } from './store/mockDataStore';
-import MockDataProvider from './store/mockDataProvider';
 
 interface MockData {
   name: string;
@@ -41,9 +39,10 @@ export const App = () => {
     setChartGeneratorStage(stage);
     handleOpenModal(event);
   };
-  const [mockData] = useAtom(MockDataAtom);
+  const [mockData, setMockData] = useAtom(MockDataAtom);
   const [uploadedData, setUploadedData] = useAtom(FileUploadAtom);
 
+  const [mockDataCopy, setMockDataCopy] = useState([]);
   const [chartGeneratorStage, setChartGeneratorStage] = useState('');
   const [chartsList, setChartsList] = useState<any[]>([]);
   const [vehicles, setVehicles] = useState<any[]>([]);
@@ -57,7 +56,14 @@ export const App = () => {
       });
     });
     setVehicles(vehi);
+    setMockDataCopy(JSON.parse(JSON.stringify(mockData)));
   }, []);
+
+  useEffect(() => {
+    if (uploadedData.length) {
+      setMockData(uploadedData);
+    }
+  }, [uploadedData]);
 
   const [chartSelectedType, setChartSelectedType] = useState<string>('');
   const handleChartTypeChange = (
@@ -185,6 +191,7 @@ export const App = () => {
   };
 
   const handleMockDataRevert = () => {
+    setMockData(mockDataCopy);
     setUploadedData([]);
   };
 
@@ -253,16 +260,16 @@ export const App = () => {
         {chartGeneratorStage === 'chartInfo' && (
           <div className="cus-modal-body">
             <div className="form-input-group">
-              <label className="form-label">Chart Title</label>
+              <label className="form-label">Chart Type</label>
               <select className="form-input" onChange={handleChartTypeChange}>
-                <option value="">Select a Chart</option>
-                <option value="line">Line Chart</option>
-                <option value="bar">Bar Chart</option>
-                <option value="doughnut">Doughnut Chart</option>
+                <option value="">Select</option>
+                <option value="line">Line</option>
+                <option value="bar">Bar</option>
+                <option value="doughnut">Doughnut</option>
               </select>
             </div>
             <div className="form-input-group">
-              <label className="form-label">Chart Title</label>
+              <label className="form-label">Title</label>
               <input
                 className="form-input"
                 type="text"
@@ -271,11 +278,11 @@ export const App = () => {
               />
             </div>
             <div className="form-input-group">
-              <label className="form-label">Chart Describtion</label>
+              <label className="form-label">Description</label>
               <textarea
                 className="form-input"
                 rows={3}
-                placeholder="Give Your Chart a Describtion"
+                placeholder="Give Your Chart a Description"
                 onInput={handleChartDescriptionChange}
               ></textarea>
             </div>
@@ -293,7 +300,7 @@ export const App = () => {
           <div className="cus-modal-body">
             <div className="chart-options-selector">
               <div className="form-input-group">
-                <label className="form-label">Vechiles</label>
+                <label className="form-label">Vehicles</label>
                 <Select
                   onChange={(list) => handleSelectedVechileList(list)}
                   isMulti
@@ -312,7 +319,7 @@ export const App = () => {
                     className="form-input"
                     onChange={handleLoadForOtherCharts}
                   >
-                    <option value="">Select Value</option>
+                    <option value="">Select</option>
                     <option value="loaded">Fuel Consumption (Loaded)</option>
                     <option value="unloaded">
                       Fuel Consumption (Unloaded)
@@ -325,7 +332,7 @@ export const App = () => {
                   <div className="form-input-group">
                     <label className="form-label">x-axis</label>
                     <select className="form-input" onChange={handleXAxisChange}>
-                      <option value="">Select x-axis</option>
+                      <option value="">Select</option>
                       {filteredXAxisOptions.map((option) => (
                         <option key={option.key} value={option.key}>
                           {option.value}
@@ -336,7 +343,7 @@ export const App = () => {
                   <div className="form-input-group">
                     <label className="form-label">y-axis</label>
                     <select className="form-input" onChange={handleYAxisChange}>
-                      <option value="">Select y-axis</option>
+                      <option value="">Select</option>
                       {filteredYAxisOptions.map((option) => (
                         <option key={option.key} value={option.key}>
                           {option.value}
@@ -364,7 +371,7 @@ export const App = () => {
                 className="cus-button button-black"
                 onClick={handleGenerateChart}
               >
-                Genrate
+                Generate
               </button>
             </div>
           </div>
