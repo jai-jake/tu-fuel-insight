@@ -3,8 +3,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import './app.css';
 import { Text, Button, Icon } from '@trackunit/react-components';
-import { Select } from '@trackunit/react-form-components';
-import { useModal } from '@trackunit/react-modal';
 import { useEffect, useState } from 'react';
 import { useAtom } from 'jotai';
 import { FileUploadAtom } from './components/FileUpload/FileUploadStore';
@@ -28,33 +26,11 @@ interface MockData {
 }
 
 export const App = () => {
-  const {
-    closeModal,
-    openModal: handleOpenModal,
-    Modal,
-  } = useModal({
-    closeOnOutsideClick: true,
-  });
-
   const [mockData, setMockData] = useAtom(MockDataAtom);
   const [uploadedData, setUploadedData] = useAtom(FileUploadAtom);
 
   const [mockDataCopy, setMockDataCopy] = useState([]);
-  const [chartGeneratorStage, setChartGeneratorStage] = useState('');
   const [chartsList, setChartsList] = useState<any[]>([]);
-  const [vehicles, setVehicles] = useState<any[]>([]);
-
-  useEffect(() => {
-    const vehi: any[] = [];
-    mockData.forEach((vechile: any) => {
-      vehi.push({
-        label: vechile.label,
-        value: vechile.name,
-      });
-    });
-    setVehicles(vehi);
-    setMockDataCopy(JSON.parse(JSON.stringify(mockData)));
-  }, []);
 
   useEffect(() => {
     if (uploadedData.length) {
@@ -70,12 +46,14 @@ export const App = () => {
   };
 
   const handleUpadteChartData = (id: number, updatedData: any) => {
+    console.log('updatedData', updatedData);
     const updatedChartsList = chartsList.map((chartData) => {
       if (chartData.id === id) {
         return updatedData;
       }
       return chartData;
     });
+    console.log('updatedChartsList', updatedChartsList);
     setChartsList(updatedChartsList);
   };
 
@@ -85,6 +63,17 @@ export const App = () => {
   };
 
   const [isOpened, setIsOpened] = useState(false);
+  const handleCloseModal = () => {
+    setIsOpened(false);
+  };
+
+  const handleAddChart = (chartData: any) => {
+    const newId = chartsList.length + 1;
+    const chartWithId = { ...chartData, id: newId };
+    const updatedChartsList = [...chartsList, chartWithId];
+    setChartsList(updatedChartsList);
+    setIsOpened(false);
+  };
 
   return (
     <div className="main-wrapper">
@@ -131,141 +120,19 @@ export const App = () => {
                   chartData={chartData}
                   onDelete={handleDeleteChart}
                   onUpdate={handleUpadteChartData}
-                  vehicles={vehicles}
                 />
               );
             })}
           </div>
         </div>
       )}
-      {/* <Modal className="custom-modal-size">
-        <div className="cus-modal-header">
-          <Button className="cus-button-close" onClick={closeModal}>
-            X
-          </Button>
-        </div>
-        {chartGeneratorStage === 'chartInfo' && (
-          <div className="cus-modal-body">
-            <div className="form-input-group">
-              <label className="form-label">Chart Type</label>
-              <select className="form-input" onChange={handleChartTypeChange}>
-                <option value="">Select</option>
-                <option value="line">Line</option>
-                <option value="bar">Bar</option>
-                <option value="doughnut">Doughnut</option>
-              </select>
-            </div>
-            <div className="form-input-group">
-              <label className="form-label">Title</label>
-              <input
-                className="form-input"
-                type="text"
-                placeholder="Give Your Chart a Title"
-                onInput={handleChartTitleChange}
-              />
-            </div>
-            <div className="form-input-group">
-              <label className="form-label">Description</label>
-              <textarea
-                className="form-input"
-                rows={3}
-                placeholder="Give Your Chart a Description"
-                onInput={handleChartDescriptionChange}
-              ></textarea>
-            </div>
-            <div className="form-button-group">
-              <button
-                className="cus-button button-black"
-                onClick={handlenextStep}
-              >
-                Next
-              </button>
-            </div>
-          </div>
-        )}
-        {chartGeneratorStage === 'chartOptions' && (
-          <div className="cus-modal-body">
-            <div className="chart-options-selector">
-              <div className="form-input-group">
-                <label className="form-label">Vehicles</label>
-                <Select
-                  onChange={(list) => handleSelectedVechileList(list)}
-                  isMulti
-                  maxMenuHeight={300}
-                  options={vehicles}
-                  placeholder="Select Vehicles"
-                />
-              </div>
-              <div className="form-input-group">
-                <input className="form-input" type="date" />
-              </div>
-              {(chartSelectedType === 'bar' ||
-                chartSelectedType === 'doughnut') && (
-                <div className="form-input-group">
-                  <select
-                    className="form-input"
-                    onChange={handleLoadForOtherCharts}
-                  >
-                    <option value="">Select</option>
-                    <option value="loaded">Fuel Consumption (Loaded)</option>
-                    <option value="unloaded">
-                      Fuel Consumption (Unloaded)
-                    </option>
-                  </select>
-                </div>
-              )}
-              {chartSelectedType === 'line' && (
-                <>
-                  <div className="form-input-group">
-                    <label className="form-label">x-axis</label>
-                    <select className="form-input" onChange={handleXAxisChange}>
-                      <option value="">Select</option>
-                      {filteredXAxisOptions.map((option) => (
-                        <option key={option.key} value={option.key}>
-                          {option.value}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                  <div className="form-input-group">
-                    <label className="form-label">y-axis</label>
-                    <select className="form-input" onChange={handleYAxisChange}>
-                      <option value="">Select</option>
-                      {filteredYAxisOptions.map((option) => (
-                        <option key={option.key} value={option.key}>
-                          {option.value}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-
-                  <div className="notes">
-                    Note: Only fuel consumption with load is shown for the line
-                    chart. To view data for unloaded conditions, use a different
-                    chart type.
-                  </div>
-                </>
-              )}
-            </div>
-            <div className="form-button-group-vertical">
-              <button
-                className="cus-button button-black"
-                onClick={handleBackButton}
-              >
-                Back
-              </button>
-              <button
-                className="cus-button button-black"
-                onClick={handleGenerateChart}
-              >
-                Generate
-              </button>
-            </div>
-          </div>
-        )}
-      </Modal> */}
       {isOpened && (
-        <ModalCommpnent isOpen={isOpened} action={'add'} mockData={mockData} />
+        <ModalCommpnent
+          mockData={mockData}
+          isOpened={isOpened}
+          onClose={handleCloseModal}
+          onAddChart={handleAddChart}
+        />
       )}
       {/* <DragAndSwap /> */}
     </div>
