@@ -10,6 +10,7 @@ interface Vehicle {
 }
 
 interface ChartData {
+  id?: number;
   type: string;
   title: string;
   description: string;
@@ -24,7 +25,9 @@ interface ModalComponentProps {
   mockData: Vehicle[];
   isOpened: boolean;
   onClose: () => void;
-  onAddChart: (chartData: ChartData) => void;
+  onAddChart?: (chartData: ChartData) => void;
+  onUpdateChart?: (updatedData: ChartData) => void;
+  individualChartData?: ChartData;
 }
 
 const ModalComponent: React.FC<ModalComponentProps> = ({
@@ -32,6 +35,8 @@ const ModalComponent: React.FC<ModalComponentProps> = ({
   isOpened,
   onClose,
   onAddChart,
+  onUpdateChart,
+  individualChartData,
 }) => {
   const vehicles = mockData.map((vehicle) => ({
     label: vehicle.label,
@@ -40,20 +45,47 @@ const ModalComponent: React.FC<ModalComponentProps> = ({
 
   const animatedComponents = makeAnimated();
 
-  const [chartSelectedType, setChartSelectedType] = useState<string>('');
-  const [chartTitle, setChartTitle] = useState<string>('');
-  const [chartDescription, setChartDescription] = useState<string>('');
-  const [selectedVehicleList, setSelectedVehicleList] = useState<string[]>([]);
-  const [defaultVehicleList, setDefaultVehicleList] = useState<
-    MultiValue<{ label: string; value: string }>
-  >([]);
-  const [minDate, setMinDate] = useState<string>('');
-  const [maxDate, setMaxDate] = useState<string>('');
-  const [fromDate, setFromDate] = useState<string>('');
-  const [toDate, setToDate] = useState<string>('');
-  const [xAxis, setXAxis] = useState<string>('');
-  const [yAxis, setYAxis] = useState<string>('');
-  const [singleAxisValue, setSingleAxisValue] = useState<string>('');
+  const [chartSelectedType, setChartSelectedType] = useState<string>(
+    individualChartData?.type || ''
+  );
+  const [chartTitle, setChartTitle] = useState<string>(
+    individualChartData?.title || ''
+  );
+  const [chartDescription, setChartDescription] = useState<string>(
+    individualChartData?.description || ''
+  );
+  const [selectedVehicleList, setSelectedVehicleList] = useState<string[]>(
+    individualChartData?.selectedVechileList || []
+  );
+  const [defaultVehicleList, setDefaultVehicleList] = useState<MultiValue<any>>(
+    individualChartData?.selectedVechileList
+      ? mockData
+          .filter((x: { name: string }) =>
+            individualChartData.selectedVechileList.includes(x.name)
+          )
+          .map((x: { label: string; name: string }) => ({
+            label: x.label,
+            value: x.name,
+          }))
+      : []
+  );
+  const [minDate, setMinDate] = useState<string>(
+    individualChartData?.dateRange.startDate || ''
+  );
+  const [maxDate, setMaxDate] = useState<string>(
+    individualChartData?.dateRange.endDate || ''
+  );
+  const [fromDate, setFromDate] = useState<string>(
+    individualChartData?.dateRange.startDate || ''
+  );
+  const [toDate, setToDate] = useState<string>(
+    individualChartData?.dateRange.endDate || ''
+  );
+  const [xAxis, setXAxis] = useState<string>(individualChartData?.xAxis || '');
+  const [yAxis, setYAxis] = useState<string>(individualChartData?.yAxis || '');
+  const [singleAxisValue, setSingleAxisValue] = useState<string>(
+    individualChartData?.singleAxisValue || ''
+  );
 
   const handleChartTypeChange = (
     event: React.ChangeEvent<HTMLSelectElement>
@@ -128,7 +160,26 @@ const ModalComponent: React.FC<ModalComponentProps> = ({
       xAxis: xAxis,
       yAxis: yAxis,
     };
-    onAddChart(chartData);
+    if (onAddChart) onAddChart(chartData);
+    clearAllFields();
+  };
+
+  const handleUpdateChart = () => {
+    const chartData: ChartData = {
+      id: individualChartData?.id,
+      type: chartSelectedType,
+      title: chartTitle,
+      description: chartDescription,
+      selectedVechileList: selectedVehicleList,
+      dateRange: { startDate: fromDate, endDate: toDate },
+      singleAxisValue: singleAxisValue,
+      xAxis: xAxis,
+      yAxis: yAxis,
+    };
+    if (onUpdateChart) {
+      console.log('chartData', chartData);
+      onUpdateChart(chartData);
+    }
     clearAllFields();
   };
 
@@ -299,12 +350,22 @@ const ModalComponent: React.FC<ModalComponentProps> = ({
           <button className="cus-button button-black" onClick={clearAllFields}>
             Clear
           </button>
-          <button
-            className="cus-button button-black"
-            onClick={handleGenerateChart}
-          >
-            Generate
-          </button>
+          {individualChartData && (
+            <button
+              className="cus-button button-black"
+              onClick={handleUpdateChart}
+            >
+              Update
+            </button>
+          )}
+          {!individualChartData && (
+            <button
+              className="cus-button button-black"
+              onClick={handleGenerateChart}
+            >
+              Generate
+            </button>
+          )}
         </div>
       </div>
     </div>

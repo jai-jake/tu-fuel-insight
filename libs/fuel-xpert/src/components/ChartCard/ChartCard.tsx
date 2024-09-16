@@ -7,6 +7,7 @@ import './ChartCard.css';
 import { Text, Icon } from '@trackunit/react-components';
 import { useAtom } from 'jotai';
 import { MockDataAtom } from '../../store/mockDataStore';
+import ModalComponent from '../ModalComponent/ModelComponent';
 
 const ChartCard = (propsData: any) => {
   const [mockData] = useAtom(MockDataAtom);
@@ -23,11 +24,9 @@ const ChartCard = (propsData: any) => {
   };
 
   const handledSingleVehicleDelete = (vechile: any) => {
-    console.log('Delete vechile', vechile);
     const updatedVechileList = chartValue.selectedVechileList.filter(
       (v: any) => v !== vechile
     );
-    console.log('updatedVechileList', updatedVechileList);
     propsData.onUpdate(chartValue.id, {
       ...chartValue,
       selectedVechileList: updatedVechileList,
@@ -65,6 +64,17 @@ const ChartCard = (propsData: any) => {
     paddingTop: '20px',
   };
 
+  const [IsOpen, setIsOpen] = useState(false);
+
+  const handleCloseModal = () => {
+    setIsOpen(false);
+  };
+
+  const handleUpdateChart = (updatedData: any) => {
+    propsData.onUpdate(chartValue.id, updatedData);
+    setIsOpen(false);
+  };
+
   return (
     <div
       key={chartValue.id}
@@ -93,14 +103,17 @@ const ChartCard = (propsData: any) => {
             </span>
           </div>
           <div className="chart-card-header-actions">
-            <Icon
-              name="PencilSquare"
-              type="outline"
-              style={{
-                cursor: 'pointer',
-                color: '#6E6E6E',
-              }}
-            />
+            {!isZoomed && (
+              <Icon
+                name="PencilSquare"
+                type="outline"
+                style={{
+                  cursor: 'pointer',
+                  color: '#6E6E6E',
+                }}
+                onClick={() => setIsOpen(!IsOpen)}
+              />
+            )}
             {!isZoomed && (
               <Icon
                 name="ArrowsPointingOut"
@@ -123,15 +136,17 @@ const ChartCard = (propsData: any) => {
                 onClick={() => setIsZoomed(!isZoomed)}
               ></Icon>
             )}
-            <Icon
-              name="Trash"
-              type="outline"
-              style={{
-                cursor: 'pointer',
-                color: '#6E6E6E',
-              }}
-              onClick={() => handleDelete(chartValue.id)}
-            />
+            {!isZoomed && (
+              <Icon
+                name="Trash"
+                type="outline"
+                style={{
+                  cursor: 'pointer',
+                  color: '#6E6E6E',
+                }}
+                onClick={() => handleDelete(chartValue.id)}
+              />
+            )}
           </div>
         </div>
         <div className="selection-wrapper">
@@ -173,6 +188,15 @@ const ChartCard = (propsData: any) => {
           <DoughnutChart chartDetails={chartValue} />
         )}
       </div>
+      {IsOpen && (
+        <ModalComponent
+          mockData={mockData}
+          isOpened={IsOpen}
+          onClose={handleCloseModal}
+          individualChartData={chartValue}
+          onUpdateChart={handleUpdateChart}
+        />
+      )}
     </div>
   );
 };

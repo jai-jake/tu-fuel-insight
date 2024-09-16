@@ -46,14 +46,12 @@ export const App = () => {
   };
 
   const handleUpadteChartData = (id: number, updatedData: any) => {
-    console.log('updatedData', updatedData);
     const updatedChartsList = chartsList.map((chartData) => {
       if (chartData.id === id) {
         return updatedData;
       }
       return chartData;
     });
-    console.log('updatedChartsList', updatedChartsList);
     setChartsList(updatedChartsList);
   };
 
