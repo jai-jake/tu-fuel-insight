@@ -11,6 +11,7 @@ import { FileUploadAtom } from './components/FileUpload/FileUploadStore';
 import ChartCard from './components/ChartCard/ChartCard';
 import FileUpload from './components/FileUpload/FileUpload';
 import { MockDataAtom } from './store/mockDataStore';
+import ModalCommpnent from './components/ModalComponent/ModelComponent';
 
 interface MockData {
   name: string;
@@ -35,10 +36,6 @@ export const App = () => {
     closeOnOutsideClick: true,
   });
 
-  const openModal = (stage: any, event: any) => {
-    setChartGeneratorStage(stage);
-    handleOpenModal(event);
-  };
   const [mockData, setMockData] = useAtom(MockDataAtom);
   const [uploadedData, setUploadedData] = useAtom(FileUploadAtom);
 
@@ -65,114 +62,6 @@ export const App = () => {
     }
   }, [uploadedData]);
 
-  const [chartSelectedType, setChartSelectedType] = useState<string>('');
-  const handleChartTypeChange = (
-    event: React.ChangeEvent<HTMLSelectElement>
-  ) => {
-    setChartSelectedType(event.target.value);
-  };
-
-  const [chartTitle, setChartTitle] = useState<string>('');
-  const handleChartTitleChange = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setChartTitle(event.target.value);
-  };
-
-  const [chartDescription, setChartDescription] = useState<string>('');
-  const handleChartDescriptionChange = (
-    event: React.ChangeEvent<HTMLTextAreaElement>
-  ) => {
-    setChartDescription(event.target.value);
-  };
-
-  const handleBackButton = () => {
-    setChartGeneratorStage('chartInfo');
-  };
-
-  const handlenextStep = () => {
-    setChartGeneratorStage('chartOptions');
-  };
-
-  const [selectedVechileList, setSelectedVechileList] = useState<any[]>([]);
-  const handleSelectedVechileList = (selectedList: any) => {
-    setSelectedVechileList(selectedList.map((item: any) => item.value));
-  };
-
-  const [dateRange, setDateRange] = useState<string>('');
-  const handleDateRangeChange = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setDateRange(event.target.value);
-  };
-
-  const [xAxis, setXAxis] = useState<string>('');
-  const [yAxis, setYAxis] = useState<string>('');
-  const axisOptions = [
-    { key: 'load', value: 'Load' },
-    { key: 'fuel', value: 'Fuel Consumption' },
-  ];
-
-  const handleXAxisChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setXAxis(event.target.value);
-  };
-
-  const handleYAxisChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setYAxis(event.target.value);
-  };
-
-  const filteredXAxisOptions = axisOptions.filter((option) => {
-    if (yAxis === 'fuel') {
-      return option.key === 'load';
-    } else if (yAxis === 'load') {
-      return option.key === 'fuel';
-    }
-    return option.key !== yAxis;
-  });
-
-  const filteredYAxisOptions = axisOptions.filter((option) => {
-    if (xAxis === 'fuel') {
-      return option.key === 'load';
-    } else if (xAxis === 'load') {
-      return option.key === 'fuel';
-    }
-    return option.key !== xAxis;
-  });
-
-  const [singleAxisValue, setSingleAxisValue] = useState<string>('');
-  const handleLoadForOtherCharts = (
-    event: React.ChangeEvent<HTMLSelectElement>
-  ) => {
-    setSingleAxisValue(event.target.value);
-  };
-
-  const clearAllFields = () => {
-    setChartSelectedType('');
-    setChartTitle('');
-    setChartDescription('');
-    setXAxis('');
-    setYAxis('');
-    setSingleAxisValue('');
-  };
-
-  const handleGenerateChart = () => {
-    const chartData = {
-      id: chartsList.length + 1,
-      type: chartSelectedType,
-      title: chartTitle,
-      description: chartDescription,
-      selectedVechileList: selectedVechileList,
-      dateRange: dateRange,
-      singleAxisValue: singleAxisValue,
-      xAxis: xAxis,
-      yAxis: yAxis,
-    };
-    setChartsList([...chartsList, chartData]);
-    setChartGeneratorStage('');
-    clearAllFields();
-    closeModal();
-  };
-
   const handleDeleteChart = (id: number) => {
     const updatedChartsList = chartsList.filter(
       (chartData) => chartData.id !== id
@@ -195,13 +84,12 @@ export const App = () => {
     setUploadedData([]);
   };
 
+  const [isOpened, setIsOpened] = useState(false);
+
   return (
     <div className="main-wrapper">
       {chartsList.length === 0 && (
-        <div
-          className="report-card-warpper"
-          onClick={(e) => openModal('chartInfo', e)}
-        >
+        <div className="report-card-warpper" onClick={() => setIsOpened(true)}>
           <div className="inner-card-wrapper">
             <Icon
               name="PresentationChartLine"
@@ -230,28 +118,27 @@ export const App = () => {
             <FileUpload />
             <Button
               className="cus-button button-black"
-              onClick={(e) => openModal('chartInfo', e)}
+              onClick={() => setIsOpened(true)}
             >
               Add a New Chart
             </Button>
           </div>
-          <div className="chart-content">
+          <div className="chart-content-list">
             {chartsList.map((chartData: any, index: number) => {
               return (
-                <div key={index}>
-                  <ChartCard
-                    chartData={chartData}
-                    onDelete={handleDeleteChart}
-                    onUpdate={handleUpadteChartData}
-                    vehicles={vehicles}
-                  />
-                </div>
+                <ChartCard
+                  key={index}
+                  chartData={chartData}
+                  onDelete={handleDeleteChart}
+                  onUpdate={handleUpadteChartData}
+                  vehicles={vehicles}
+                />
               );
             })}
           </div>
         </div>
       )}
-      <Modal className="custom-modal-size">
+      {/* <Modal className="custom-modal-size">
         <div className="cus-modal-header">
           <Button className="cus-button-close" onClick={closeModal}>
             X
@@ -376,7 +263,10 @@ export const App = () => {
             </div>
           </div>
         )}
-      </Modal>
+      </Modal> */}
+      {isOpened && (
+        <ModalCommpnent isOpen={isOpened} action={'add'} mockData={mockData} />
+      )}
       {/* <DragAndSwap /> */}
     </div>
   );

@@ -96,9 +96,3 @@
   /* background-color: red; */
   /* overflow-y: auto; */
 }
-
-.highcharts-data-table table {
-  min-width: 650px;
-  max-width: 98%x;
-  margin: 1em auto;
-}

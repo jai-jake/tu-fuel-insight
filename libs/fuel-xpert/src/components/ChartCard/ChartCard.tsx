@@ -9,6 +9,7 @@ import { useModal } from '@trackunit/react-modal';
 import { Select } from '@trackunit/react-form-components';
 import { useAtom } from 'jotai';
 import { MockDataAtom } from '../../store/mockDataStore';
+import { max } from 'date-fns';
 
 const ChartCard = (propsData: any) => {
   const [mockData] = useAtom(MockDataAtom);
@@ -142,35 +143,34 @@ const ChartCard = (propsData: any) => {
     propsData.onDelete(key);
   };
 
-  const zoomInStyle: any = {
+  const zoomInWrapperStyle: any = {
     position: 'absolute',
     top: '0',
     left: '0',
-    minWidth: '100vw',
-    maxWidth: '100vw',
-    maxHeight: '100vh',
+    width: '100%',
+    height: '100%',
     zIndex: '100',
     backgroundColor: 'white',
   };
 
-  const zoomOutStyle: any = {
-    minWidth: '650px',
-    width: '49.5%',
-    display: 'flex',
-    flexDirection: 'column',
+  const zoomOutWrapperStyle: any = {
+    width: '650px',
+    height: '550px',
+    maxHeight: '550px',
     gap: '12px',
   };
 
-  const zoomInCardStyle: any = {
-    width: '100vw',
-    flexGrow: '1',
-    paddingTop: '20px',
+  const zoomInCardContentStyle: any = {
+    minWidth: 'calc(100% - 20px)',
+    width: 'calc(100% - 20px)',
+    height: 'calc(100% - 100px)',
+    paddingTop: '100px',
   };
 
-  const zoomOutCardStyle: any = {
-    width: '650px',
-    maxHeight: '500px',
-    flexGrow: '1',
+  const zoomOutCardContentStyle: any = {
+    width: '100%',
+    height: 'calc(550px - 20px)',
+    maxHeight: 'calc(550px - 20px)',
     paddingTop: '20px',
   };
 
@@ -178,7 +178,7 @@ const ChartCard = (propsData: any) => {
     <div
       key={chartValue.id}
       className="chart-card-wrapper"
-      style={isZoomed ? zoomInStyle : zoomOutStyle}
+      style={isZoomed ? zoomInWrapperStyle : zoomOutWrapperStyle}
     >
       <div className="chart-card-header-wrapper">
         <div className="chart-card-title-wrapper">
@@ -273,7 +273,7 @@ const ChartCard = (propsData: any) => {
       </div>
       <div
         className="chart-content"
-        style={isZoomed ? zoomInCardStyle : zoomOutCardStyle}
+        style={isZoomed ? zoomInCardContentStyle : zoomOutCardContentStyle}
       >
         {chartValue.type === 'bar' && <BarNChart chartDetails={chartValue} />}
         {chartValue.type === 'line' && <LineChart chartDetails={chartValue} />}
