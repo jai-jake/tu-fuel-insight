@@ -10,6 +10,7 @@ import ChartCard from './components/ChartCard/ChartCard';
 import FileUpload from './components/FileUpload/FileUpload';
 import { MockDataAtom } from './store/mockDataStore';
 import ModalCommpnent from './components/ModalComponent/ModelComponent';
+import Draggable from 'react-draggable';
 
 interface MockData {
   name: string;
@@ -67,10 +68,56 @@ export const App = () => {
 
   const handleAddChart = (chartData: any) => {
     const newId = chartsList.length + 1;
-    const chartWithId = { ...chartData, id: newId };
+    const chartWithId = { ...chartData, id: newId, x: 0, y: 0 };
     const updatedChartsList = [...chartsList, chartWithId];
     setChartsList(updatedChartsList);
     setIsOpened(false);
+  };
+
+  const [draggingChart, setDraggingChart] = useState<any>(null);
+
+  const handleDragStart = (id: number) => {
+    setDraggingChart(id);
+  };
+
+  const handleDragStop = (e: any, data: any, id: number) => {
+    const updatedChartsList = [...chartsList];
+    const draggedChartIndex = updatedChartsList.findIndex(
+      (chart) => chart.id === id
+    );
+    const draggedChart = {
+      ...updatedChartsList[draggedChartIndex],
+      x: data.x,
+      y: data.y,
+    };
+
+    for (let i = 0; i < updatedChartsList.length; i++) {
+      if (
+        i !== draggedChartIndex &&
+        isOverlapping(draggedChart, updatedChartsList[i])
+      ) {
+        // Swap positions
+        const tempX = updatedChartsList[i].x;
+        const tempY = updatedChartsList[i].y;
+        updatedChartsList[i].x = draggedChart.x;
+        updatedChartsList[i].y = draggedChart.y;
+        draggedChart.x = tempX;
+        draggedChart.y = tempY;
+        break;
+      }
+    }
+
+    updatedChartsList[draggedChartIndex] = draggedChart;
+    setChartsList(updatedChartsList);
+    setDraggingChart(null);
+  };
+
+  const isOverlapping = (draggedChart: any, targetChart: any) => {
+    const buffer = 100; // Adjust the buffer for better overlap detection
+    return (
+      Math.abs(draggedChart.x - targetChart.x) < buffer &&
+      Math.abs(draggedChart.y - targetChart.y) < buffer
+    );
   };
 
   return (
@@ -111,14 +158,25 @@ export const App = () => {
             </Button>
           </div>
           <div className="chart-content-list">
-            {chartsList.map((chartData: any, index: number) => {
+            {chartsList.map((chartData: any) => {
               return (
-                <ChartCard
-                  key={index}
-                  chartData={chartData}
-                  onDelete={handleDeleteChart}
-                  onUpdate={handleUpadteChartData}
-                />
+                <Draggable
+                  key={chartData.id}
+                  position={{ x: chartData.x, y: chartData.y }} // Set initial position
+                  onStart={() => handleDragStart(chartData.id)}
+                  onStop={(e, data) => handleDragStop(e, data, chartData.id)}
+                  axis="both"
+                  // handle=".drag-handle"
+                >
+                  <div key={chartData.id}>
+                    <ChartCard
+                      key={chartData.id}
+                      chartData={chartData}
+                      onDelete={handleDeleteChart}
+                      onUpdate={handleUpadteChartData}
+                    />
+                  </div>
+                </Draggable>
               );
             })}
           </div>

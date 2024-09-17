@@ -208,6 +208,20 @@ const ModalComponent: React.FC<ModalComponentProps> = ({
     return option.key !== xAxis;
   });
 
+  const isFormValid = () => {
+    return (
+      chartSelectedType !== '' &&
+      chartTitle !== '' &&
+      chartDescription !== '' &&
+      selectedVehicleList.length > 0 &&
+      fromDate !== '' &&
+      toDate !== '' &&
+      (chartSelectedType !== 'line' || (xAxis !== '' && yAxis !== '')) &&
+      ((chartSelectedType !== 'bar' && chartSelectedType !== 'doughnut') ||
+        singleAxisValue !== '')
+    );
+  };
+
   return (
     <div className="modal-wrapper">
       <div className="modal-content">
@@ -354,6 +368,7 @@ const ModalComponent: React.FC<ModalComponentProps> = ({
             <button
               className="cus-button button-black"
               onClick={handleUpdateChart}
+              disabled={!isFormValid()}
             >
               Update
             </button>
@@ -362,6 +377,7 @@ const ModalComponent: React.FC<ModalComponentProps> = ({
             <button
               className="cus-button button-black"
               onClick={handleGenerateChart}
+              disabled={!isFormValid()}
             >
               Generate
             </button>

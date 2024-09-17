@@ -148,13 +148,19 @@ textarea.form-input:hover {
   cursor: pointer;
 }
 
+.cus-button:disabled {
+  background-color: #8d8181;
+  color: #000;
+  cursor: not-allowed;
+}
+
 .button-black {
   background-color: #000;
   color: #fff;
   width: 140px;
 }
 
-.button-black:hover {
+.button-black:not(:disabled):hover {
   background-color: #333;
   border: 2px solid #930fff;
 }

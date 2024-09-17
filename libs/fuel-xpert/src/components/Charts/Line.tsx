@@ -5,18 +5,39 @@ import HighchartsReact from 'highcharts-react-official';
 import { useAtom } from 'jotai';
 import { useEffect, useState } from 'react';
 import { MockDataAtom } from '../../store/mockDataStore';
+import { format } from 'date-fns';
 
 const LineChart = (propData: any) => {
   const { chartDetails } = propData;
   const [mockData] = useAtom(MockDataAtom);
-  const { selectedVechileList, xAxis, yAxis } = chartDetails;
+  const { selectedVechileList, xAxis, yAxis, dateRange } = chartDetails;
   const check = xAxis === 'load' || yAxis === 'load';
+  const startDate = new Date(dateRange.startDate);
+  const endDate = new Date(dateRange.endDate);
+  const getDatesInRange = (startDate: Date, endDate: Date) => {
+    const dates = [];
+    const currentDate = startDate;
+    while (currentDate <= endDate) {
+      dates.push(format(currentDate, 'yyyy-MM-dd'));
+      currentDate.setDate(currentDate.getDate() + 1);
+    }
+    return dates;
+  };
+  const datesInRange = getDatesInRange(startDate, endDate);
+
   // Filter datasets based on selected vehicles
   const [chartData, setChartData] = useState([]);
   const mockDataCopy = JSON.parse(JSON.stringify(mockData));
   useEffect(() => {
     const filteredData = mockDataCopy
       .filter((dataset: any) => selectedVechileList.includes(dataset.name))
+      // .map((dataset: any) => {
+      //   dataset.data = dataset.data.filter((set: any) => {
+      //     const date = new Date(set.timestamp);
+      //     return date >= startDate && date <= endDate;
+      //   });
+      //   return dataset;
+      // })
       .map((dataset: any) => {
         dataset.data = dataset.data.filter(
           (set: any) => check && (set.weight > 0 || set.weight === 0)

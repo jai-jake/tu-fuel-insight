@@ -84,11 +84,13 @@ const ChartCard = (propsData: any) => {
       <div className="chart-card-header-wrapper">
         <div className="chart-card-title-wrapper">
           <div className="chart-card-header-title">
-            <Icon
-              className="drag-handle"
-              name="EllipsisDrag"
-              style={{ cursor: 'grab' }}
-            ></Icon>
+            {!isZoomed && (
+              <Icon
+                className="drag-handle"
+                name="EllipsisDrag"
+                style={{ cursor: 'grab' }}
+              ></Icon>
+            )}
             <Text className="title-min-width">{chartValue.title}</Text>
             <span className="tooltip">
               <Icon
