@@ -29,7 +29,7 @@ export const App = () => {
   const [mockData, setMockData] = useAtom(MockDataAtom);
   const [uploadedData, setUploadedData] = useAtom(FileUploadAtom);
 
-  const [mockDataCopy, setMockDataCopy] = useState([]);
+  const [mockDataCopy, setMockDataCopy] = useState(mockData);
   const [chartsList, setChartsList] = useState<any[]>([]);
 
   useEffect(() => {
