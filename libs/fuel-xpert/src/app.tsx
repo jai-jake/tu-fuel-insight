@@ -168,14 +168,14 @@ export const App = () => {
                   axis="both"
                   // handle=".drag-handle"
                 >
-                  <div key={chartData.id}>
-                    <ChartCard
-                      key={chartData.id}
-                      chartData={chartData}
-                      onDelete={handleDeleteChart}
-                      onUpdate={handleUpadteChartData}
-                    />
-                  </div>
+                  {/* <div key={chartData.id}> */}
+                  <ChartCard
+                    key={chartData.id}
+                    chartData={chartData}
+                    onDelete={handleDeleteChart}
+                    onUpdate={handleUpadteChartData}
+                  />
+                  {/* </div> */}
                 </Draggable>
               );
             })}

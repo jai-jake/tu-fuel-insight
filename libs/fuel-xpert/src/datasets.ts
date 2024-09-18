@@ -2,7 +2,7 @@ export const datasets = [
   {
     name: 'vehicle1',
     label: 'Vehicle 1',
-    color: '#f87b4e',
+    color: '#ffc54a',
     textColor: '#000000',
     data: [
       {
@@ -304,7 +304,7 @@ export const datasets = [
   {
     name: 'vehicle2',
     label: 'Vehicle 2',
-    color: '#000000',
+    color: '#6ff17d',
     textColor: '#ffffff',
     data: [
       {
@@ -606,7 +606,7 @@ export const datasets = [
   {
     name: 'vehicle3',
     label: 'Vehicle 3',
-    color: '#6bccfe',
+    color: '#000000',
     textColor: '#000000',
     data: [
       {
@@ -908,7 +908,7 @@ export const datasets = [
   {
     name: 'vehicle4',
     label: 'Vehicle 4',
-    color: '#ffc54a',
+    color: '#e74c3c',
     textColor: '#000000',
     data: [
       {
@@ -1203,7 +1203,7 @@ export const datasets = [
   {
     name: 'vehicle5',
     label: 'Vehicle 5',
-    color: '#6ff17d',
+    color: '#3498db',
     textColor: '#000000',
     data: [
       {

@@ -70,9 +70,6 @@ const LineChart = (propData: any) => {
     title: {
       text: '',
     },
-    legend: {
-      enabled: false,
-    },
     chart: {
       type: 'line',
       backgroundColor: '#fff',

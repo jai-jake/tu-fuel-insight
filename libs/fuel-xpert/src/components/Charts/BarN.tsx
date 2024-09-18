@@ -98,9 +98,6 @@ const BarChart = (propData: any) => {
   });
 
   const options: Highcharts.Options = {
-    legend: {
-      enabled: false,
-    },
     title: {
       text: '',
     },

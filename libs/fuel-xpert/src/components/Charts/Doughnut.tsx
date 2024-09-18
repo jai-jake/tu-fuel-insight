@@ -10,7 +10,10 @@ const DoughnutChart = (propData: any) => {
   const chartValue = propData.chartDetails;
   const [mockData] = useAtom(MockDataAtom);
   const mockDataCopy = JSON.parse(JSON.stringify(mockData));
-  const dateRange = { startDate: '2024-08-01', endDate: '2024-08-10' };
+  const dateRange = {
+    startDate: chartValue.dateRange.startDate,
+    endDate: chartValue.dateRange.endDate,
+  };
 
   const getDatesInRange = (startDate: string, endDate: string): string[] => {
     const start = new Date(startDate);
@@ -80,9 +83,25 @@ const DoughnutChart = (propData: any) => {
 
   const seriesData: any = Object.values(aggregatedData);
 
+  const totalFuelConsumption = seriesData.reduce((acc: any, data: any) => {
+    return acc + data.y;
+  }, 0);
+
   const options: Highcharts.Options = {
     title: {
       text: '',
+    },
+    plotOptions: {
+      pie: {
+        showInLegend: true,
+      },
+    },
+    subtitle: {
+      useHTML: true,
+      text: `<span style="font-size: 30px">${totalFuelConsumption}</span>`,
+      floating: true,
+      verticalAlign: 'middle',
+      y: -10,
     },
     series: [
       {
@@ -91,6 +110,7 @@ const DoughnutChart = (propData: any) => {
         data: seriesData.map((s: any) => ({
           ...s,
           color: mockDataCopy.find((d: any) => d.name === s.name)?.color,
+          name: mockDataCopy.find((d: any) => d.name === s.name)?.label,
         })),
         innerSize: '60%',
       },
