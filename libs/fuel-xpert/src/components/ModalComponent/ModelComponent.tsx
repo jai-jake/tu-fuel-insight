@@ -19,6 +19,8 @@ interface ChartData {
   singleAxisValue: string;
   xAxis: string;
   yAxis: string;
+  comparisonVehicle: string;
+  comparisonVehicleList: string[];
 }
 
 interface ModalComponentProps {
@@ -87,6 +89,26 @@ const ModalComponent: React.FC<ModalComponentProps> = ({
     individualChartData?.singleAxisValue || ''
   );
 
+  const [comparisonVehicle, setComparisonVehicle] = useState<string>(
+    individualChartData?.comparisonVehicle || ''
+  );
+  const [comparisonVehicleList, setComparisonVehicleList] = useState<string[]>(
+    individualChartData?.comparisonVehicleList || []
+  );
+  const [defaultComparisonVehicleList, setDefaultComparisonVehicleList] =
+    useState<MultiValue<any>>(
+      individualChartData?.comparisonVehicleList
+        ? mockData
+            .filter((x: { name: string }) =>
+              individualChartData.comparisonVehicleList.includes(x.name)
+            )
+            .map((x: { label: string; name: string }) => ({
+              label: x.label,
+              value: x.name,
+            }))
+        : []
+    );
+
   const handleChartTypeChange = (
     event: React.ChangeEvent<HTMLSelectElement>
   ) => {
@@ -147,6 +169,9 @@ const ModalComponent: React.FC<ModalComponentProps> = ({
     setYAxis('');
     setSingleAxisValue('');
     setDefaultVehicleList([]);
+    setDefaultComparisonVehicleList([]);
+    setComparisonVehicle('');
+    setComparisonVehicleList([]);
   };
 
   const handleGenerateChart = () => {
@@ -159,6 +184,8 @@ const ModalComponent: React.FC<ModalComponentProps> = ({
       singleAxisValue: singleAxisValue,
       xAxis: xAxis,
       yAxis: yAxis,
+      comparisonVehicle: comparisonVehicle,
+      comparisonVehicleList: comparisonVehicleList,
     };
     if (onAddChart) onAddChart(chartData);
     clearAllFields();
@@ -175,6 +202,8 @@ const ModalComponent: React.FC<ModalComponentProps> = ({
       singleAxisValue: singleAxisValue,
       xAxis: xAxis,
       yAxis: yAxis,
+      comparisonVehicle: comparisonVehicle,
+      comparisonVehicleList: comparisonVehicleList,
     };
     if (onUpdateChart) {
       console.log('chartData', chartData);
@@ -213,14 +242,37 @@ const ModalComponent: React.FC<ModalComponentProps> = ({
       chartSelectedType !== '' &&
       chartTitle !== '' &&
       chartDescription !== '' &&
-      selectedVehicleList.length > 0 &&
+      (chartSelectedType !== 'comparison-bar' ||
+        selectedVehicleList.length > 0) &&
       fromDate !== '' &&
       toDate !== '' &&
       (chartSelectedType !== 'line' || (xAxis !== '' && yAxis !== '')) &&
       ((chartSelectedType !== 'bar' && chartSelectedType !== 'doughnut') ||
-        singleAxisValue !== '')
+        singleAxisValue !== '') &&
+      (chartSelectedType !== 'comparison-bar' ||
+        (comparisonVehicle !== '' && comparisonVehicleList.length > 0))
     );
   };
+
+  const handleComparisonVehicle = (
+    event: React.ChangeEvent<HTMLSelectElement>
+  ) => {
+    setComparisonVehicle(event.target.value);
+  };
+
+  const handleComparisonVehicleList = (
+    selectedList: MultiValue<{ label: string; value: string }>
+  ) => {
+    setComparisonVehicleList(selectedList.map((item) => item.value));
+    setDefaultComparisonVehicleList(selectedList);
+  };
+
+  const comparisonVehicleSelect = vehicles.filter(
+    (v) => !comparisonVehicleList.includes(v.value)
+  );
+  const filteredVehicleList = vehicles.filter(
+    (v) => v.value !== comparisonVehicle
+  );
 
   return (
     <div className="modal-wrapper">
@@ -233,7 +285,7 @@ const ModalComponent: React.FC<ModalComponentProps> = ({
         <div className="cus-form-body">
           <div className="cus-modal-body">
             <div className="form-input-group">
-              <label className="form-label">Chart Title</label>
+              <label className="form-label">Chart Type</label>
               <select
                 className="form-input"
                 value={chartSelectedType}
@@ -243,6 +295,7 @@ const ModalComponent: React.FC<ModalComponentProps> = ({
                 <option value="line">Line Chart</option>
                 <option value="bar">Bar Chart</option>
                 <option value="doughnut">Doughnut Chart</option>
+                <option value="comparison-bar">Comparison Bar Chart</option>
               </select>
             </div>
             <div className="form-input-group">
@@ -267,7 +320,7 @@ const ModalComponent: React.FC<ModalComponentProps> = ({
             </div>
           </div>
           <div className="cus-modal-body">
-            <div className="chart-options-selector">
+            {chartSelectedType !== 'comparison-bar' && (
               <div className="form-input-group">
                 <label className="form-label">Vehicles</label>
                 <Select
@@ -279,96 +332,129 @@ const ModalComponent: React.FC<ModalComponentProps> = ({
                   value={defaultVehicleList}
                 />
               </div>
-              <div className="form-input-group">
-                <label className="form-label">From</label>
-                <input
-                  type="date"
-                  className="form-input"
-                  value={fromDate}
-                  max={maxDate}
-                  onChange={handleFromDateChange}
-                />
-              </div>
-              <div className="form-input-group">
-                <label className="form-label">To</label>
-                <input
-                  type="date"
-                  className="form-input"
-                  value={toDate}
-                  min={minDate}
-                  onChange={handleToDateChange}
-                />
-              </div>
-              {(chartSelectedType === 'bar' ||
-                chartSelectedType === 'doughnut') &&
-                selectedVehicleList.length > 0 && (
-                  <div className="form-input-group">
-                    <label className="form-label">Fuel Option</label>
-                    <select
-                      className="form-input"
-                      onChange={handleLoadForOtherCharts}
-                      value={singleAxisValue}
-                    >
-                      <option value="">Select Value</option>
-                      <option value="loaded">Fuel Consumption (Loaded)</option>
-                      <option value="unloaded">
-                        Fuel Consumption (Unloaded)
+            )}
+            {chartSelectedType === 'comparison-bar' && (
+              <>
+                <div className="form-input-group">
+                  <label className="form-label">Comparsion Vehicle</label>
+                  <select
+                    className="form-input"
+                    onChange={handleComparisonVehicle}
+                    value={comparisonVehicle}
+                  >
+                    <option value="">Select the vehicle</option>
+                    {comparisonVehicleSelect.map((vehicle) => (
+                      <option key={vehicle.value} value={vehicle.value}>
+                        {vehicle.label}
                       </option>
-                    </select>
-                  </div>
-                )}
-              {chartSelectedType === 'line' &&
-                selectedVehicleList.length > 0 && (
-                  <>
-                    <div className="form-input-group">
-                      <label className="form-label">x-axis</label>
-                      <select
-                        className="form-input"
-                        onChange={handleXAxisChange}
-                        value={xAxis}
-                      >
-                        <option value="">Select x-axis</option>
-                        {filteredXAxisOptions.map((option) => (
-                          <option key={option.key} value={option.key}>
-                            {option.value}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-                    <div className="form-input-group">
-                      <label className="form-label">y-axis</label>
-                      <select
-                        className="form-input"
-                        onChange={handleYAxisChange}
-                        value={yAxis}
-                      >
-                        <option value="">Select y-axis</option>
-                        {filteredYAxisOptions.map((option) => (
-                          <option key={option.key} value={option.key}>
-                            {option.value}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-                    <div className="notes">
-                      Note: Only fuel consumption with load is shown for the
-                      line chart. To view data for unloaded conditions, use a
-                      different chart type.
-                    </div>
-                  </>
-                )}
+                    ))}
+                  </select>
+                </div>
+                <div className="form-input-group">
+                  <label className="form-label">Vehicles</label>
+                  <Select
+                    closeMenuOnSelect={false}
+                    isMulti
+                    components={animatedComponents}
+                    options={filteredVehicleList}
+                    onChange={handleComparisonVehicleList}
+                    value={defaultComparisonVehicleList}
+                  />
+                </div>
+              </>
+            )}
+            {(chartSelectedType === 'bar' ||
+              chartSelectedType === 'doughnut') &&
+              selectedVehicleList.length > 0 && (
+                <div className="form-input-group">
+                  <label className="form-label">Fuel Option</label>
+                  <select
+                    className="form-input"
+                    onChange={handleLoadForOtherCharts}
+                    value={singleAxisValue}
+                  >
+                    <option value="">Select Value</option>
+                    <option value="loaded">Fuel Consumption (Loaded)</option>
+                    <option value="unloaded">
+                      Fuel Consumption (Unloaded)
+                    </option>
+                  </select>
+                </div>
+              )}
+            {chartSelectedType === 'line' && selectedVehicleList.length > 0 && (
+              <>
+                <div className="form-input-group">
+                  <label className="form-label">x-axis</label>
+                  <select
+                    className="form-input"
+                    onChange={handleXAxisChange}
+                    value={xAxis}
+                  >
+                    <option value="">Select x-axis</option>
+                    {filteredXAxisOptions.map((option) => (
+                      <option key={option.key} value={option.key}>
+                        {option.value}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div className="form-input-group">
+                  <label className="form-label">y-axis</label>
+                  <select
+                    className="form-input"
+                    onChange={handleYAxisChange}
+                    value={yAxis}
+                  >
+                    <option value="">Select y-axis</option>
+                    {filteredYAxisOptions.map((option) => (
+                      <option key={option.key} value={option.key}>
+                        {option.value}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </>
+            )}
+          </div>
+          <div className="cus-modal-body">
+            <div className="form-input-group">
+              <label className="form-label">From</label>
+              <input
+                type="date"
+                className="form-input"
+                value={fromDate}
+                max={maxDate}
+                onChange={handleFromDateChange}
+              />
             </div>
+            <div className="form-input-group">
+              <label className="form-label">To</label>
+              <input
+                type="date"
+                className="form-input"
+                value={toDate}
+                min={minDate}
+                onChange={handleToDateChange}
+              />
+            </div>
+            {chartSelectedType === 'line' && (
+              <div className="notes">
+                Note: Only fuel consumption with load is shown for the line
+                chart. To view data for unloaded conditions, use a different
+                chart type.
+              </div>
+            )}
           </div>
         </div>
         <div className="form-button-group-vertical">
-          <button className="cus-button button-black" onClick={clearAllFields}>
+          <span className="clear-link-button" onClick={clearAllFields}>
             Clear
-          </button>
+          </span>
           {individualChartData && (
             <button
               className="cus-button button-black"
               onClick={handleUpdateChart}
-              disabled={!isFormValid()}
+              // disabled={!isFormValid()}
             >
               Update
             </button>
@@ -377,7 +463,7 @@ const ModalComponent: React.FC<ModalComponentProps> = ({
             <button
               className="cus-button button-black"
               onClick={handleGenerateChart}
-              disabled={!isFormValid()}
+              // disabled={!isFormValid()}
             >
               Generate
             </button>

@@ -8,6 +8,7 @@ import { Text, Icon } from '@trackunit/react-components';
 import { useAtom } from 'jotai';
 import { MockDataAtom } from '../../store/mockDataStore';
 import ModalComponent from '../ModalComponent/ModelComponent';
+import ComparisonBar from '../Charts/ComparisonBar';
 
 const ChartCard = (propsData: any) => {
   const [mockData] = useAtom(MockDataAtom);
@@ -188,6 +189,9 @@ const ChartCard = (propsData: any) => {
         {chartValue.type === 'line' && <LineChart chartDetails={chartValue} />}
         {chartValue.type === 'doughnut' && (
           <DoughnutChart chartDetails={chartValue} />
+        )}
+        {chartValue.type === 'comparison-bar' && (
+          <ComparisonBar chartDetails={chartValue} />
         )}
       </div>
       {IsOpen && (

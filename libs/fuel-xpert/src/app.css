@@ -59,6 +59,11 @@
   flex-wrap: wrap;
 }
 
+.main-wrapper::-webkit-scrollbar,
+.chart-content-list::-webkit-scrollbar {
+  display: none;
+}
+
 .cus-button-close {
   border: none;
   cursor: pointer;

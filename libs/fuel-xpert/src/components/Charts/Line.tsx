@@ -31,13 +31,22 @@ const LineChart = (propData: any) => {
   useEffect(() => {
     const filteredData = mockDataCopy
       .filter((dataset: any) => selectedVechileList.includes(dataset.name))
-      // .map((dataset: any) => {
-      //   dataset.data = dataset.data.filter((set: any) => {
-      //     const date = new Date(set.timestamp);
-      //     return date >= startDate && date <= endDate;
-      //   });
-      //   return dataset;
-      // })
+      .map((dataset: any) => {
+        const extractDate = (dateTimeString: string): string => {
+          return dateTimeString.split(' ')[0];
+        };
+        dataset.data = dataset.data.filter((set: any) => {
+          if (
+            extractDate(set.timestamp) >= dateRange.startDate &&
+            extractDate(set.timestamp) <= dateRange.endDate
+          ) {
+            return true;
+          } else {
+            return false;
+          }
+        });
+        return dataset;
+      })
       .map((dataset: any) => {
         dataset.data = dataset.data.filter(
           (set: any) => check && (set.weight > 0 || set.weight === 0)

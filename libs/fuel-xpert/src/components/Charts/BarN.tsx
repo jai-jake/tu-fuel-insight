@@ -4,12 +4,16 @@ import * as Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 import { useAtom } from 'jotai';
 import { MockDataAtom } from '../../store/mockDataStore';
+import { useEffect } from 'react';
 
 const BarChart = (propData: any) => {
   const chartValue = propData.chartDetails;
   const [mockData] = useAtom(MockDataAtom);
   const mockDataCopy = JSON.parse(JSON.stringify(mockData));
-  const dateRange = { startDate: '2024-08-01', endDate: '2024-08-10' };
+  const dateRange = {
+    startDate: chartValue.dateRange.startDate,
+    endDate: chartValue.dateRange.endDate,
+  };
 
   const getDatesInRange = (startDate: string, endDate: string): string[] => {
     const start = new Date(startDate);

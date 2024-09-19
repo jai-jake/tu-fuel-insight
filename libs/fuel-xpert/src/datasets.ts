@@ -3,7 +3,7 @@ export const datasets = [
     name: 'vehicle1',
     label: 'Vehicle 1',
     color: '#ffc54a',
-    textColor: '#000000',
+    textColor: '#ffffff',
     data: [
       {
         timestamp: '2024-08-01 08:00',
@@ -606,8 +606,8 @@ export const datasets = [
   {
     name: 'vehicle3',
     label: 'Vehicle 3',
-    color: '#000000',
-    textColor: '#000000',
+    color: '#9f00ff',
+    textColor: '#ffffff',
     data: [
       {
         timestamp: '2024-08-01 07:00',
@@ -909,7 +909,7 @@ export const datasets = [
     name: 'vehicle4',
     label: 'Vehicle 4',
     color: '#e74c3c',
-    textColor: '#000000',
+    textColor: '#ffffff',
     data: [
       {
         timestamp: '2024-08-01 10:00',
@@ -1204,7 +1204,7 @@ export const datasets = [
     name: 'vehicle5',
     label: 'Vehicle 5',
     color: '#3498db',
-    textColor: '#000000',
+    textColor: '#ffffff',
     data: [
       {
         timestamp: '2024-08-01 09:00',
