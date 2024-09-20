@@ -59,7 +59,7 @@ const ChartCard = (propsData: any) => {
 
   // Check if two cards are colliding
   const isColliding = (card1: Card, card2: Card): boolean => {
-    const buffer = 100; // Adjust the buffer for better overlap detection
+    const buffer = 325; // Adjust the buffer for better overlap detection
     return (
       Math.abs(card1.x - card2.x) < buffer &&
       Math.abs(card1.y - card2.y) < buffer

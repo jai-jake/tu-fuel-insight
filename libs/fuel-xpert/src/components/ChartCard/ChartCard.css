@@ -110,5 +110,6 @@
 
 .card.dragging {
   cursor: grabbing;
+  z-index: 9999;
   /* Show grabbing cursor when the card is being dragged */
 }
