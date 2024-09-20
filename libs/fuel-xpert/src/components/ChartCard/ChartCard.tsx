@@ -9,12 +9,62 @@ import { useAtom } from 'jotai';
 import { MockDataAtom } from '../../store/mockDataStore';
 import ModalComponent from '../ModalComponent/ModelComponent';
 import ComparisonBar from '../Charts/ComparisonBar';
+import Draggable, { DraggableEvent, DraggableData } from 'react-draggable';
+
+// Define the type for card data
+interface Card {
+  id: number;
+  x: number;
+  y: number;
+}
 
 const ChartCard = (propsData: any) => {
   const [mockData] = useAtom(MockDataAtom);
 
-  const [chartValue, setChartValue] = useState(propsData.chartData);
+  const { chartsList, chartData, index, setChartsList } = propsData;
+
+  const [chartValue, setChartValue] = useState(chartData);
   const [isZoomed, setIsZoomed] = useState(false);
+
+  const [dragging, setDragging] = useState(false);
+
+  // Handle when dragging stops
+  const handleDragStop = (
+    e: DraggableEvent,
+    data: DraggableData,
+    index: number
+  ) => {
+    // eslint-disable-next-line no-debugger
+    debugger;
+    const updatedCards = [...chartsList];
+    updatedCards[index] = { ...updatedCards[index], x: data.x, y: data.y };
+
+    // Check if we need to swap positions with another card
+    for (let i = 0; i < chartsList.length; i++) {
+      if (i !== index && isColliding(updatedCards[index], updatedCards[i])) {
+        // Swap positions of the two cards
+        const temp = { ...updatedCards[i] }; // Store card i's position
+        updatedCards[i] = {
+          ...updatedCards[i],
+          x: chartsList[index].x,
+          y: chartsList[index].y,
+        }; // Move card i to card index's position
+        updatedCards[index] = { ...updatedCards[index], x: temp.x, y: temp.y }; // Move card index to card i's position
+        break;
+      }
+    }
+
+    setChartsList(updatedCards);
+  };
+
+  // Check if two cards are colliding
+  const isColliding = (card1: Card, card2: Card): boolean => {
+    const buffer = 100; // Adjust the buffer for better overlap detection
+    return (
+      Math.abs(card1.x - card2.x) < buffer &&
+      Math.abs(card1.y - card2.y) < buffer
+    );
+  };
 
   useEffect(() => {
     setChartValue(propsData.chartData);
@@ -77,134 +127,158 @@ const ChartCard = (propsData: any) => {
   };
 
   return (
-    <div
-      key={chartValue.id}
-      className="chart-card-wrapper"
-      style={isZoomed ? zoomInWrapperStyle : zoomOutWrapperStyle}
+    <Draggable
+      key={chartData.id}
+      position={{ x: chartData.x, y: chartData.y }}
+      onStop={(e, data) => {
+        handleDragStop(e, data, index);
+        setDragging(false);
+      }}
+      onStart={() => setDragging(true)}
     >
-      <div className="chart-card-header-wrapper">
-        <div className="chart-card-title-wrapper">
-          <div className="chart-card-header-title">
-            {!isZoomed && (
-              <Icon
-                className="drag-handle"
-                name="EllipsisDrag"
-                style={{ cursor: 'grab' }}
-              ></Icon>
-            )}
-            <Text className="title-min-width">{chartValue.title}</Text>
-            <span className="tooltip">
-              <Icon
-                name="InformationCircle"
-                type="outline"
-                style={{
-                  cursor: 'pointer',
-                  color: '#6E6E6E',
-                }}
-              />
-              <span className="tooltiptext">{chartValue.description}</span>
-            </span>
-          </div>
-          <div className="chart-card-header-actions">
-            {!isZoomed && (
-              <Icon
-                name="PencilSquare"
-                type="outline"
-                style={{
-                  cursor: 'pointer',
-                  color: '#6E6E6E',
-                }}
-                onClick={() => setIsOpen(!IsOpen)}
-              />
-            )}
-            {!isZoomed && (
-              <Icon
-                name="ArrowsPointingOut"
-                type="outline"
-                style={{
-                  cursor: 'pointer',
-                  color: '#6E6E6E',
-                }}
-                onClick={() => setIsZoomed(!isZoomed)}
-              ></Icon>
-            )}
-            {isZoomed && (
-              <Icon
-                name="ArrowsPointingIn"
-                type="outline"
-                style={{
-                  cursor: 'pointer',
-                  color: '#6E6E6E',
-                }}
-                onClick={() => setIsZoomed(!isZoomed)}
-              ></Icon>
-            )}
-            {!isZoomed && (
-              <Icon
-                name="Trash"
-                type="outline"
-                style={{
-                  cursor: 'pointer',
-                  color: '#6E6E6E',
-                }}
-                onClick={() => handleDelete(chartValue.id)}
-              />
-            )}
-          </div>
-        </div>
-        <div className="selection-wrapper">
-          {chartValue.selectedVechileList.map(
-            (vechile: any, vechileIndex: number) => {
-              return (
-                <div
-                  className="selection-items"
-                  key={vechileIndex}
-                  style={{
-                    background: mockData.find((d: any) => d.name === vechile)
-                      ?.color,
-                    color: mockData.find((d: any) => d.name === vechile)
-                      ?.textColor,
-                  }}
-                >
-                  <span>
-                    {mockData.find((x: any) => x.name === vechile)?.label}
-                  </span>
+      <div style={styles.card} className={`card ${dragging ? 'dragging' : ''}`}>
+        <div
+          key={chartValue.id}
+          className="chart-card-wrapper"
+          style={isZoomed ? zoomInWrapperStyle : zoomOutWrapperStyle}
+        >
+          <div className="chart-card-header-wrapper">
+            <div className="chart-card-title-wrapper">
+              <div className="chart-card-header-title">
+                {!isZoomed && (
                   <Icon
-                    name="XMark"
-                    size="medium"
-                    style={{ cursor: 'pointer', alignSelf: 'center' }}
-                    onClick={() => handledSingleVehicleDelete(vechile)}
+                    className="drag-handle"
+                    name="EllipsisDrag"
+                    style={{ cursor: 'grab' }}
+                  ></Icon>
+                )}
+                <Text className="title-min-width">{chartValue.title}</Text>
+                <span className="tooltip">
+                  <Icon
+                    name="InformationCircle"
+                    type="outline"
+                    style={{
+                      cursor: 'pointer',
+                      color: '#6E6E6E',
+                    }}
                   />
-                </div>
-              );
-            }
+                  <span className="tooltiptext">{chartValue.description}</span>
+                </span>
+              </div>
+              <div className="chart-card-header-actions">
+                {!isZoomed && (
+                  <Icon
+                    name="PencilSquare"
+                    type="outline"
+                    style={{
+                      cursor: 'pointer',
+                      color: '#6E6E6E',
+                    }}
+                    onClick={() => setIsOpen(!IsOpen)}
+                  />
+                )}
+                {!isZoomed && (
+                  <Icon
+                    name="ArrowsPointingOut"
+                    type="outline"
+                    style={{
+                      cursor: 'pointer',
+                      color: '#6E6E6E',
+                    }}
+                    onClick={() => setIsZoomed(!isZoomed)}
+                  ></Icon>
+                )}
+                {isZoomed && (
+                  <Icon
+                    name="ArrowsPointingIn"
+                    type="outline"
+                    style={{
+                      cursor: 'pointer',
+                      color: '#6E6E6E',
+                    }}
+                    onClick={() => setIsZoomed(!isZoomed)}
+                  ></Icon>
+                )}
+                {!isZoomed && (
+                  <Icon
+                    name="Trash"
+                    type="outline"
+                    style={{
+                      cursor: 'pointer',
+                      color: '#6E6E6E',
+                    }}
+                    onClick={() => handleDelete(chartValue.id)}
+                  />
+                )}
+              </div>
+            </div>
+            <div className="selection-wrapper">
+              {chartValue.selectedVechileList.map(
+                (vechile: any, vechileIndex: number) => {
+                  return (
+                    <div
+                      className="selection-items"
+                      key={vechileIndex}
+                      style={{
+                        background: mockData.find(
+                          (d: any) => d.name === vechile
+                        )?.color,
+                        color: mockData.find((d: any) => d.name === vechile)
+                          ?.textColor,
+                      }}
+                    >
+                      <span>
+                        {mockData.find((x: any) => x.name === vechile)?.label}
+                      </span>
+                      <Icon
+                        name="XMark"
+                        size="medium"
+                        style={{ cursor: 'pointer', alignSelf: 'center' }}
+                        onClick={() => handledSingleVehicleDelete(vechile)}
+                      />
+                    </div>
+                  );
+                }
+              )}
+            </div>
+          </div>
+          <div
+            className="chart-content"
+            style={isZoomed ? zoomInCardContentStyle : zoomOutCardContentStyle}
+          >
+            {chartValue.type === 'bar' && (
+              <BarNChart chartDetails={chartValue} />
+            )}
+            {chartValue.type === 'line' && (
+              <LineChart chartDetails={chartValue} />
+            )}
+            {chartValue.type === 'doughnut' && (
+              <DoughnutChart chartDetails={chartValue} />
+            )}
+            {chartValue.type === 'comparison-bar' && (
+              <ComparisonBar chartDetails={chartValue} />
+            )}
+          </div>
+          {IsOpen && (
+            <ModalComponent
+              mockData={mockData}
+              isOpened={IsOpen}
+              onClose={handleCloseModal}
+              individualChartData={chartValue}
+              onUpdateChart={handleUpdateChart}
+            />
           )}
         </div>
       </div>
-      <div
-        className="chart-content"
-        style={isZoomed ? zoomInCardContentStyle : zoomOutCardContentStyle}
-      >
-        {chartValue.type === 'bar' && <BarNChart chartDetails={chartValue} />}
-        {chartValue.type === 'line' && <LineChart chartDetails={chartValue} />}
-        {chartValue.type === 'doughnut' && (
-          <DoughnutChart chartDetails={chartValue} />
-        )}
-        {chartValue.type === 'comparison-bar' && (
-          <ComparisonBar chartDetails={chartValue} />
-        )}
-      </div>
-      {IsOpen && (
-        <ModalComponent
-          mockData={mockData}
-          isOpened={IsOpen}
-          onClose={handleCloseModal}
-          individualChartData={chartValue}
-          onUpdateChart={handleUpdateChart}
-        />
-      )}
-    </div>
+    </Draggable>
   );
+};
+
+const styles = {
+  card: {
+    cursor: 'grabbing',
+    position: 'absolute' as any,
+  },
 };
 
 export default ChartCard;

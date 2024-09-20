@@ -3,7 +3,7 @@ import ReactDOMClient from 'react-dom/client';
 import singleSpaReact from 'single-spa-react';
 import { TrackunitProviders } from '@trackunit/react-core-contexts';
 import '@trackunit/css-core';
-import { App } from './app';
+import App  from './app';
 
 const RootComponent = () => (
   <TrackunitProviders>

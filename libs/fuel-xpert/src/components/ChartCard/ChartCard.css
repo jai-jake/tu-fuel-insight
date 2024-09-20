@@ -96,3 +96,19 @@
   /* background-color: red; */
   /* overflow-y: auto; */
 }
+
+.card {
+  cursor: grab;
+  /* Show grab cursor when hovering */
+  transition: box-shadow 0.3s ease;
+}
+
+.card:hover {
+  box-shadow: 4px 4px 15px rgba(0, 0, 0, 0.2);
+  /* Slightly stronger shadow on hover */
+}
+
+.card.dragging {
+  cursor: grabbing;
+  /* Show grabbing cursor when the card is being dragged */
+}
